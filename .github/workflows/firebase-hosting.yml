@@ -13,19 +13,7 @@ jobs:
       matrix:
         include:
           - project: "chat-67-67"
-            site: "deltasucks"
-          - project: "c0delistener"
-            site: "studyhardd"
-          - project: "c0delistener"
-            site: "67676767"
-          - project: "c0delistener"
-            site: "shutupbro"  
-          - project: "c0delistener"
-            site: "ronaldo7"    
-          - project: "chat-283f4"
-            site: "nodelta"
-          - project: "c0delistener"
-            site: "c0delistener"            
+            site: "nebulam"      
 
     steps:
       - uses: actions/checkout@v4
