@@ -106,6 +106,29 @@
 		.account-menu[hidden] {
 			display: none;
 		}
+
+		.faq-shell {
+			background:
+				radial-gradient(circle at top left, rgba(131, 131, 131, 0.16), transparent 35%),
+				radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.08), transparent 28%),
+				rgba(8, 8, 8, 0.88);
+		}
+
+		.faq-item {
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+		}
+
+		.faq-panel {
+			color: rgba(255, 255, 255, 0.75);
+		}
+
+		.faq-icon {
+			transition: transform 220ms ease;
+		}
+
+		.faq-item[aria-expanded="true"] .faq-icon {
+			transform: rotate(45deg);
+		}
 	</style>
 </head>
 <body class="font-[Manrope] bg-[#020202] text-white selection:bg-white selection:text-black">
@@ -130,6 +153,9 @@
 					</svg>
 					<input id="searchInput" type="search" placeholder="Search titles" class="ml-2 w-32 bg-transparent text-sm text-white placeholder:text-white/55 outline-none transition-all duration-300 focus:w-56 md:w-40 md:focus:w-72" />
 				</label>
+				<button id="faqJumpBtn" class="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/85 transition hover:bg-white hover:text-black">
+					FAQ
+				</button>
 				<div class="relative">
 					<button id="profileBtn" class="h-9 w-9 overflow-hidden rounded-full border border-white/30 bg-black/20 text-xs font-semibold" aria-label="Open account menu" aria-haspopup="true" aria-expanded="false">
 						<img id="profileAvatar" src="" alt="Profile avatar" class="h-full w-full object-cover" />
@@ -218,6 +244,24 @@
 				<div id="topRatedRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0" aria-label="Top rated movies carousel"></div>
 			</section>
 		</section>
+
+		<section id="faqSection" class="mx-auto max-w-[1440px] px-4 pb-16 md:px-8 md:pb-24">
+			<div class="faq-shell overflow-hidden rounded-[2rem] border border-white/10 px-5 py-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] md:px-8 md:py-10">
+				<div class="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+					<div class="space-y-5">
+						<p class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-white/70">FAQ</p>
+						<h3 class="font-display text-3xl font-black leading-tight md:text-5xl">Everything you need to know before you press play.</h3>
+						<p class="max-w-xl text-sm leading-relaxed text-white/68 md:text-base">A clean, cinematic help area for quick answers about browsing, playback, and your watched history.</p>
+						<div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm md:p-5">
+							<p class="text-sm uppercase tracking-[0.18em] text-white/45">Quick Tip</p>
+							<p class="mt-2 text-sm leading-relaxed text-white/75">Use the filter pills to switch between Movies, TV Shows, and Anime. Search instantly collapses the page into a single-column result list.</p>
+						</div>
+					</div>
+
+					<div id="faqList" class="space-y-3"></div>
+				</div>
+			</div>
+		</section>
 	</main>
 
 	<section id="playerOverlay" class="pointer-events-none fixed inset-0 z-50 bg-black/95 opacity-0 transition duration-300">
@@ -227,7 +271,10 @@
 					<p class="text-xs uppercase tracking-[0.2em] text-white/60">Now Playing</p>
 					<h4 id="playerTitle" class="text-xl font-semibold"></h4>
 				</div>
-				<button id="closePlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Back to Browse</button>
+				<div class="flex items-center gap-2">
+					<button id="refreshPlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Refresh</button>
+					<button id="closePlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Back to Browse</button>
+				</div>
 			</div>
 			<div class="relative h-full overflow-hidden rounded-xl border border-white/15 bg-black">
 				<iframe
@@ -264,6 +311,33 @@
 		const HERO_CYCLE_SIZE = 6;
 		const HERO_CYCLE_INTERVAL_MS = 7000;
 		const WATCH_HISTORY_STORAGE_KEY = "nebula_recently_watched_v1";
+
+		const faqItems = [
+			{
+				question: "How do I watch something?",
+				answer: "Click any poster card, the hero Watch Now button, or a title from Recently Watched. The player opens with the matching TMDB ID."
+			},
+			{
+				question: "What happens when I use search?",
+				answer: "Search switches the browse area into a single elegant column of results, so you can scan titles faster without horizontal rows in the way."
+			},
+			{
+				question: "What to do if a video doesn't play or load?",
+				answer: "Refresh the movie and try again. If it still doesn't work, then switch servers from 2embed to any server, in the Top-left corner. We recommend you switch to Xps"
+			},
+			{
+				question: "What happens if it redirects it to a malware site?",
+				answer: "If you get redirected to a sketchy site, simply close the tab and return to Nebula Movies. Warning: Do not interact with the sketchy site, never."
+			},
+			{
+				question: "Does the profile menu keep track of what I watched?",
+				answer: "Yes. Every time you play something, it gets stored in Recently Watched locally in your browser, newest items first."
+			},
+			{
+				question: "Why does the featured hero keep changing?",
+				answer: "The hero section cycles through six popular movies in a loop so the page feels alive, and it resets back to the first item after the last one."
+			}
+		];
 
 		let catalog = [];
 		let popularMovie = null;
@@ -303,12 +377,15 @@
 			recentlyWatchedBtn: document.getElementById("recentlyWatchedBtn"),
 			playerOverlay: document.getElementById("playerOverlay"),
 			vidkingIframe: document.getElementById("vidkingIframe"),
+			refreshPlayerBtn: document.getElementById("refreshPlayerBtn"),
 			closePlayerBtn: document.getElementById("closePlayerBtn"),
 			playerTitle: document.getElementById("playerTitle"),
 			searchInput: document.getElementById("searchInput"),
 			watchHistoryOverlay: document.getElementById("watchHistoryOverlay"),
 			watchHistoryList: document.getElementById("watchHistoryList"),
-			closeHistoryBtn: document.getElementById("closeHistoryBtn")
+			closeHistoryBtn: document.getElementById("closeHistoryBtn"),
+			faqList: document.getElementById("faqList"),
+			faqJumpBtn: document.getElementById("faqJumpBtn")
 		};
 
 		const profileAvatarSeeds = [
@@ -345,14 +422,14 @@
 			10765: "Sci-Fi"
 		};
 
-		function getPlayerUrl(item) {
-			if (item.type === "tv") {
-				const season = item.season || 1;
-				const episode = item.episode || 1;
-				return `https://www.vidking.net/embed/tv/${item.tmdbId}/${season}/${episode}?color=e50914&autoPlay=true&nextEpisode=true&episodeSelector=true`;
-			}
-			return `https://www.vidking.net/embed/movie/${item.tmdbId}?color=e50914&autoPlay=true`;
-		}
+function getPlayerUrl(item) {
+    if (item.type === "tv") {
+        const season = item.season || 1;
+        const episode = item.episode || 1;
+        return `https://www.2embed.cc/embedtv/${item.tmdbId}&s=${season}&e=${episode}`;
+    }
+    return `https://www.2embed.cc/embed/${item.tmdbId}`;
+}
 
 		function setActiveFilterPill() {
 			document.querySelectorAll(".type-filter-btn").forEach((btn) => {
@@ -687,6 +764,20 @@
 			container.innerHTML = `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">${message}</p>`;
 		}
 
+		function renderFAQ() {
+			refs.faqList.innerHTML = faqItems.map((item, index) => `
+				<article class="faq-item overflow-hidden rounded-2xl border border-white/10" aria-expanded="${index === 0 ? "true" : "false"}">
+					<button class="faq-toggle flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6" data-faq-index="${index}" aria-expanded="${index === 0 ? "true" : "false"}">
+						<span class="font-display text-base font-bold md:text-lg">${item.question}</span>
+						<span class="faq-icon inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg text-white/85">+</span>
+					</button>
+					<div class="faq-panel px-5 pb-5 ${index === 0 ? "block" : "hidden"} md:px-6">
+						<p class="max-w-3xl text-sm leading-relaxed md:text-base">${item.answer}</p>
+					</div>
+				</article>
+			`).join("");
+		}
+
 		function updateSectionLabels() {
 			const labelsByType = {
 				all: {
@@ -802,10 +893,22 @@
 
 		function openPlayer(item) {
 			addToWatchHistory(item);
+			refs.vidkingIframe.dataset.src = getPlayerUrl(item);
 			refs.playerTitle.textContent = item.title;
-			refs.vidkingIframe.src = getPlayerUrl(item);
+			refs.vidkingIframe.src = refs.vidkingIframe.dataset.src;
 			refs.playerOverlay.classList.remove("pointer-events-none", "opacity-0");
 			document.body.classList.add("overflow-hidden");
+		}
+
+		function refreshPlayer() {
+			const currentSrc = refs.vidkingIframe.dataset.src || refs.vidkingIframe.src;
+			if (!currentSrc || currentSrc === "about:blank") {
+				return;
+			}
+			refs.vidkingIframe.src = "about:blank";
+			window.setTimeout(() => {
+				refs.vidkingIframe.src = currentSrc;
+			}, 60);
 		}
 
 		function closePlayer() {
@@ -819,6 +922,12 @@
 		}
 
 		function bindEvents() {
+			refs.faqJumpBtn.addEventListener("click", () => {
+				document.getElementById("faqSection").scrollIntoView({ behavior: "smooth", block: "start" });
+			});
+
+			refs.refreshPlayerBtn.addEventListener("click", refreshPlayer);
+
 			refs.profileBtn.addEventListener("click", (event) => {
 				event.stopPropagation();
 				toggleAccountMenu();
@@ -933,11 +1042,37 @@
 					openPlayer(selected);
 				}
 			});
+
+			refs.faqList.addEventListener("click", (event) => {
+				const toggle = event.target.closest(".faq-toggle");
+				if (!toggle) {
+					return;
+				}
+
+				const item = toggle.closest(".faq-item");
+				const panel = item.querySelector(".faq-panel");
+				const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+
+				refs.faqList.querySelectorAll(".faq-item").forEach((faqItem) => {
+					faqItem.setAttribute("aria-expanded", "false");
+					faqItem.querySelector(".faq-toggle").setAttribute("aria-expanded", "false");
+					faqItem.querySelector(".faq-panel").classList.add("hidden");
+					faqItem.querySelector(".faq-panel").classList.remove("block");
+				});
+
+				if (!isExpanded) {
+					item.setAttribute("aria-expanded", "true");
+					toggle.setAttribute("aria-expanded", "true");
+					panel.classList.remove("hidden");
+					panel.classList.add("block");
+				}
+			});
 		}
 
 		async function init() {
 			refs.profileAvatar.src = pickRandomAvatar();
 			loadWatchHistory();
+			renderFAQ();
 			setActiveFilterPill();
 			bindEvents();
 			await loadCatalogFromTmdb();
