@@ -4,7 +4,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Nebula Movies</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" />
+	<link rel="icon" href="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -18,26 +18,19 @@
 			--red: #e50914;
 		}
 
-		html,
-		body {
+		html, body {
 			background: radial-gradient(circle at 20% 0%, #171717 0%, #090909 35%, #020202 70%);
 			color: #fff;
 			min-height: 100%;
 		}
 
-		.hide-scrollbar {
-			-ms-overflow-style: none;
-			scrollbar-width: none;
-		}
-
-		.hide-scrollbar::-webkit-scrollbar {
-			display: none;
-		}
+		.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+		.hide-scrollbar::-webkit-scrollbar { display: none; }
 
 		.top-rank-number {
 			-webkit-text-stroke: 2px #ffffff;
 			color: transparent;
-			text-shadow: 0 0 16px rgba(255, 255, 255, 0.15);
+			text-shadow: 0 0 16px rgba(255,255,255,0.15);
 			font-size: clamp(3.5rem, 6vw, 6.5rem);
 			line-height: 0.8;
 			font-weight: 900;
@@ -46,104 +39,85 @@
 
 		.hero-vignette {
 			background:
-				linear-gradient(to top, rgba(2, 2, 2, 1) 5%, rgba(2, 2, 2, 0.3) 50%, rgba(2, 2, 2, 0.75) 100%),
-				linear-gradient(to right, rgba(2, 2, 2, 0.9) 18%, rgba(2, 2, 2, 0.2) 65%);
+				linear-gradient(to top, rgba(2,2,2,1) 5%, rgba(2,2,2,0.3) 50%, rgba(2,2,2,0.75) 100%),
+				linear-gradient(to right, rgba(2,2,2,0.9) 18%, rgba(2,2,2,0.2) 65%);
 		}
 
 		.card-shine::after {
 			content: "";
 			position: absolute;
 			inset: 0;
-			background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.18), transparent 80%);
+			background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.18), transparent 80%);
 			transform: translateX(-120%);
 			transition: transform 450ms ease;
 			pointer-events: none;
 		}
+		.card-shine:hover::after { transform: translateX(120%); }
 
-		.card-shine:hover::after {
-			transform: translateX(120%);
-		}
-
-		.font-display {
-			font-family: "Sora", sans-serif;
-		}
+		.font-display { font-family: "Sora", sans-serif; }
 
 		.search-result-card {
-			background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+			background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
 		}
 
 		.carousel-control {
-			width: 2rem;
-			height: 2rem;
-			border: 1px solid rgba(255, 255, 255, 0.3);
+			width: 2rem; height: 2rem;
+			border: 1px solid rgba(255,255,255,0.3);
 			border-radius: 999px;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			background: rgba(255, 255, 255, 0.08);
+			display: inline-flex; align-items: center; justify-content: center;
+			background: rgba(255,255,255,0.08);
 			transition: all 200ms ease;
 		}
-
-		.carousel-control:hover {
-			background: rgba(255, 255, 255, 0.95);
-			color: #000;
-			border-color: rgba(255, 255, 255, 0.95);
-		}
+		.carousel-control:hover { background: rgba(255,255,255,0.95); color: #000; border-color: rgba(255,255,255,0.95); }
 
 		.account-menu {
-			position: absolute;
-			top: calc(100% + 0.5rem);
-			right: 0;
+			position: absolute; top: calc(100% + 0.5rem); right: 0;
 			width: 12rem;
-			background: rgba(15, 15, 15, 0.95);
+			background: rgba(15,15,15,0.95);
 			backdrop-filter: blur(8px);
-			border: 1px solid rgba(255, 255, 255, 0.14);
+			border: 1px solid rgba(255,255,255,0.14);
 			border-radius: 0.75rem;
 			padding: 0.4rem;
-			box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+			box-shadow: 0 12px 28px rgba(0,0,0,0.4);
 		}
-
-		.account-menu[hidden] {
-			display: none;
-		}
+		.account-menu[hidden] { display: none; }
 
 		.faq-shell {
 			background:
-				radial-gradient(circle at top left, rgba(131, 131, 131, 0.16), transparent 35%),
-				radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.08), transparent 28%),
-				rgba(8, 8, 8, 0.88);
+				radial-gradient(circle at top left, rgba(131,131,131,0.16), transparent 35%),
+				radial-gradient(circle at bottom right, rgba(255,255,255,0.08), transparent 28%),
+				rgba(8,8,8,0.88);
 		}
+		.faq-item { background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); }
+		.faq-panel { color: rgba(255,255,255,0.75); }
+		.faq-icon { transition: transform 220ms ease; }
+		.faq-item[aria-expanded="true"] .faq-icon { transform: rotate(45deg); }
 
-		.faq-item {
-			background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+		/* Loading skeleton */
+		.skeleton {
+			background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 75%);
+			background-size: 200% 100%;
+			animation: shimmer 1.4s infinite;
+			border-radius: 8px;
 		}
-
-		.faq-panel {
-			color: rgba(255, 255, 255, 0.75);
-		}
-
-		.faq-icon {
-			transition: transform 220ms ease;
-		}
-
-		.faq-item[aria-expanded="true"] .faq-icon {
-			transform: rotate(45deg);
-		}
+		@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 	</style>
 </head>
 <body class="font-[Manrope] bg-[#020202] text-white selection:bg-white selection:text-black">
+
 	<header class="sticky top-0 z-40 border-b border-white/10 bg-black/45 backdrop-blur-xl">
 		<nav class="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 md:px-8">
 			<div class="flex items-center gap-3">
-				<div class="h-10 w-10 rounded-md border border-white/35 bg-white/15"><img src="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" alt="Nebula Movies" class="h-9 w-9 object-cover center" /></div>
+				<div class="h-10 w-10 rounded-md border border-white/35 bg-white/15">
+					<img src="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" alt="Nebula Movies" class="h-9 w-9 object-cover" />
+				</div>
 				<h1 class="font-display text-lg font-semibold tracking-[0.18em] text-white">Nebula Movies</h1>
 			</div>
 
-			<ul class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 md:flex" aria-label="Type sorted section links">
+			<ul class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 md:flex" aria-label="Content type filter">
 				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="all">All</button></li>
 				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="movie">Movies</button></li>
 				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="tv">TV Shows</button></li>
-				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="anime">Anime</button></li>
 			</ul>
 
 			<div class="flex items-center gap-3">
@@ -169,21 +143,19 @@
 	</header>
 
 	<main>
+		<!-- Hero -->
 		<section id="hero" class="relative min-h-[78vh] overflow-hidden border-b border-white/10">
-			<img id="heroBackdrop" src="" alt="Popular movie backdrop" class="absolute inset-0 h-full w-full object-cover" />
+			<img id="heroBackdrop" src="" alt="Featured backdrop" class="absolute inset-0 h-full w-full object-cover" />
 			<div class="hero-vignette absolute inset-0"></div>
-
 			<div class="relative mx-auto flex min-h-[78vh] max-w-[1440px] items-end px-4 pb-14 pt-28 md:px-8">
 				<div class="max-w-2xl animate-[fadeIn_.6s_ease-out]">
-					<p id="heroBadge" class="mb-4 inline-flex items-center rounded-full border border-white/35 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/85">Popular Movie</p>
+					<p id="heroBadge" class="mb-4 inline-flex items-center rounded-full border border-white/35 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/85">Trending</p>
 					<h2 id="heroTitle" class="font-display text-4xl font-black leading-[0.95] drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)] md:text-6xl"></h2>
 					<div id="heroMeta" class="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/85"></div>
 					<p id="heroDescription" class="mt-5 max-w-xl text-sm leading-relaxed text-white/80 md:text-base"></p>
-
 					<div class="mt-8 flex flex-wrap gap-3">
 						<button id="heroWatchNow" class="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-black transition hover:scale-[1.03] hover:bg-white/90">
-							<span aria-hidden="true">▶</span>
-							Watch Now
+							<span aria-hidden="true">▶</span> Watch Now
 						</button>
 						<a href="#rows" class="inline-flex items-center gap-2 rounded-md border border-white/35 bg-black/35 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black">
 							More Info
@@ -193,6 +165,7 @@
 			</div>
 		</section>
 
+		<!-- Search results -->
 		<section id="searchResultsSection" class="mx-auto hidden max-w-[900px] px-4 py-10 md:px-8 md:py-12" aria-labelledby="searchResultsHeading">
 			<div class="mb-4 flex items-center justify-between">
 				<h3 id="searchResultsHeading" class="font-display text-2xl font-bold tracking-wide">Search Results</h3>
@@ -201,69 +174,71 @@
 			<div id="searchResultsList" class="grid grid-cols-1 gap-4"></div>
 		</section>
 
+		<!-- Rows -->
 		<section id="rows" class="mx-auto max-w-[1440px] space-y-10 px-4 py-10 md:px-8 md:py-12">
-			<section aria-labelledby="recentMoviesHeading">
+			<section aria-labelledby="trendingHeading">
 				<div class="mb-4 flex items-center justify-between">
-					<h3 id="recentMoviesHeading" class="text-xl font-semibold tracking-wide">Recent Movies</h3>
+					<h3 id="trendingHeading" class="text-xl font-semibold tracking-wide">Trending This Week</h3>
 					<div class="flex items-center gap-3">
-						<span id="recentMoviesTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Fresh Picks</span>
+						<span id="trendingTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Hot Now</span>
 						<div class="flex items-center gap-2">
-							<button class="carousel-control carousel-nav-btn" data-row="recentMoviesRow" data-dir="left" aria-label="Scroll recent movies left">&#x2039;</button>
-							<button class="carousel-control carousel-nav-btn" data-row="recentMoviesRow" data-dir="right" aria-label="Scroll recent movies right">&#x203A;</button>
+							<button class="carousel-control carousel-nav-btn" data-row="trendingRow" data-dir="left" aria-label="Scroll left">&#x2039;</button>
+							<button class="carousel-control carousel-nav-btn" data-row="trendingRow" data-dir="right" aria-label="Scroll right">&#x203A;</button>
 						</div>
 					</div>
 				</div>
-				<div id="recentMoviesRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0" aria-label="Recent movies carousel"></div>
+				<div id="trendingRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0"></div>
 			</section>
 
 			<section aria-labelledby="top10Heading">
 				<div class="mb-4 flex items-center justify-between">
-					<h3 id="top10Heading" class="text-xl font-semibold tracking-wide">Top 10 Movies</h3>
+					<h3 id="top10Heading" class="text-xl font-semibold tracking-wide">Top 10</h3>
 					<div class="flex items-center gap-3">
 						<span id="top10Tag" class="text-xs uppercase tracking-[0.18em] text-white/55">Most Watched</span>
 						<div class="flex items-center gap-2">
-							<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="left" aria-label="Scroll top 10 movies left">&#x2039;</button>
-							<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="right" aria-label="Scroll top 10 movies right">&#x203A;</button>
+							<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="left" aria-label="Scroll left">&#x2039;</button>
+							<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="right" aria-label="Scroll right">&#x203A;</button>
 						</div>
 					</div>
 				</div>
-				<div id="top10Row" class="carousel-row hide-scrollbar flex gap-8 overflow-x-auto pb-4 pl-2" tabindex="0" aria-label="Top 10 movies carousel"></div>
+				<div id="top10Row" class="carousel-row hide-scrollbar flex gap-8 overflow-x-auto pb-4 pl-2" tabindex="0"></div>
 			</section>
 
-			<section aria-labelledby="topRatedHeading">
+			<section aria-labelledby="tvHeading">
 				<div class="mb-4 flex items-center justify-between">
-					<h3 id="topRatedHeading" class="text-xl font-semibold tracking-wide">Top Rated</h3>
+					<h3 id="tvHeading" class="text-xl font-semibold tracking-wide">Trending TV Shows</h3>
 					<div class="flex items-center gap-3">
-						<span id="topRatedTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Critic Favorites</span>
+						<span id="tvTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Binge Worthy</span>
 						<div class="flex items-center gap-2">
-							<button class="carousel-control carousel-nav-btn" data-row="topRatedRow" data-dir="left" aria-label="Scroll top rated movies left">&#x2039;</button>
-							<button class="carousel-control carousel-nav-btn" data-row="topRatedRow" data-dir="right" aria-label="Scroll top rated movies right">&#x203A;</button>
+							<button class="carousel-control carousel-nav-btn" data-row="tvRow" data-dir="left" aria-label="Scroll left">&#x2039;</button>
+							<button class="carousel-control carousel-nav-btn" data-row="tvRow" data-dir="right" aria-label="Scroll right">&#x203A;</button>
 						</div>
 					</div>
 				</div>
-				<div id="topRatedRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0" aria-label="Top rated movies carousel"></div>
+				<div id="tvRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0"></div>
 			</section>
 		</section>
 
+		<!-- FAQ -->
 		<section id="faqSection" class="mx-auto max-w-[1440px] px-4 pb-16 md:px-8 md:pb-24">
 			<div class="faq-shell overflow-hidden rounded-[2rem] border border-white/10 px-5 py-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] md:px-8 md:py-10">
 				<div class="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
 					<div class="space-y-5">
 						<p class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-white/70">FAQ</p>
 						<h3 class="font-display text-3xl font-black leading-tight md:text-5xl">Everything you need to know before you press play.</h3>
-						<p class="max-w-xl text-sm leading-relaxed text-white/68 md:text-base">A clean, cinematic help area for quick answers about browsing, playback, and your watched history.</p>
+						<p class="max-w-xl text-sm leading-relaxed text-white/68 md:text-base">Quick answers about browsing, playback, and your watch history.</p>
 						<div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm md:p-5">
 							<p class="text-sm uppercase tracking-[0.18em] text-white/45">Quick Tip</p>
-							<p class="mt-2 text-sm leading-relaxed text-white/75">Use the filter pills to switch between Movies, TV Shows, and Anime. Search instantly collapses the page into a single-column result list.</p>
+							<p class="mt-2 text-sm leading-relaxed text-white/75">Use the filter pills to switch between Movies and TV Shows. Search instantly collapses the page into a single-column result list.</p>
 						</div>
 					</div>
-
 					<div id="faqList" class="space-y-3"></div>
 				</div>
 			</div>
 		</section>
 	</main>
 
+	<!-- Player overlay -->
 	<section id="playerOverlay" class="pointer-events-none fixed inset-0 z-50 bg-black/95 opacity-0 transition duration-300">
 		<div class="mx-auto flex h-full max-w-[1440px] flex-col px-4 py-4 md:px-8 md:py-6">
 			<div class="mb-4 flex items-center justify-between">
@@ -277,24 +252,18 @@
 				</div>
 			</div>
 			<div class="relative h-full overflow-hidden rounded-xl border border-white/15 bg-black">
-				<iframe
-					id="vidkingIframe"
-					title="Vidking Player"
-					src="about:blank"
-					allow="autoplay; encrypted-media; picture-in-picture"
-					allowfullscreen
-					class="h-full w-full"
-				></iframe>
+				<iframe id="vidkingIframe" title="2embed Player" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen class="h-full w-full"></iframe>
 			</div>
 		</div>
 	</section>
 
+	<!-- Watch history overlay -->
 	<section id="watchHistoryOverlay" class="pointer-events-none fixed inset-0 z-[60] bg-black/75 opacity-0 transition duration-300">
 		<div class="mx-auto flex h-full max-w-[980px] items-center justify-center px-4">
 			<div class="max-h-[84vh] w-full overflow-hidden rounded-2xl border border-white/20 bg-[#090909]">
 				<div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
 					<h4 class="font-display text-xl font-bold">Recently Watched</h4>
-					<button id="closeHistoryBtn" class="rounded-md border border-white/30 px-3 py-1.5 text-sm transition hover:bg-white hover:text-black">X</button>
+					<button id="closeHistoryBtn" class="rounded-md border border-white/30 px-3 py-1.5 text-sm transition hover:bg-white hover:text-black">✕</button>
 				</div>
 				<div id="watchHistoryList" class="max-h-[70vh] space-y-3 overflow-y-auto p-4"></div>
 			</div>
@@ -302,20 +271,73 @@
 	</section>
 
 	<script>
-		const TMDB_API_KEY = "e55425032d3d0f371fc776f302e7c09b";
-		const TMDB_BASE_URL = "https://api.themoviedb.org/3";
-		const TMDB_POSTER_BASE = "https://image.tmdb.org/t/p/w500";
-		const TMDB_BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
-		const PLACEHOLDER_POSTER = "https://placehold.co/400x600/0a0a0a/ffffff?text=No+Poster";
+		// ─── 2embed API ───────────────────────────────────────────────────────────
+		const API_BASE      = "https://api.2embed.cc";
+		const PLACEHOLDER_POSTER   = "https://placehold.co/400x600/0a0a0a/ffffff?text=No+Poster";
 		const PLACEHOLDER_BACKDROP = "https://placehold.co/1280x720/0a0a0a/ffffff?text=No+Backdrop";
-		const HERO_CYCLE_SIZE = 6;
+		const HERO_CYCLE_SIZE      = 6;
 		const HERO_CYCLE_INTERVAL_MS = 7000;
-		const WATCH_HISTORY_STORAGE_KEY = "nebula_recently_watched_v1";
+		const WATCH_HISTORY_KEY    = "nebula_recently_watched_v2";
 
+		// ─── State ────────────────────────────────────────────────────────────────
+		let catalog        = [];   // all fetched items
+		let movieCatalog   = [];
+		let tvCatalog      = [];
+		let heroCycleItems = [];
+		let heroCycleIndex = 0;
+		let heroCycleTimer = null;
+		let featuredItem   = null;
+		let watchHistory   = [];
+
+		const state = {
+			searchTerm: "",
+			activeType: "all",   // "all" | "movie" | "tv"
+			searchDebounceTimer: null
+		};
+
+		// ─── Refs ─────────────────────────────────────────────────────────────────
+		const refs = {
+			heroBackdrop:           document.getElementById("heroBackdrop"),
+			heroBadge:              document.getElementById("heroBadge"),
+			heroTitle:              document.getElementById("heroTitle"),
+			heroMeta:               document.getElementById("heroMeta"),
+			heroDescription:        document.getElementById("heroDescription"),
+			heroWatchNow:           document.getElementById("heroWatchNow"),
+			rows:                   document.getElementById("rows"),
+			trendingRow:            document.getElementById("trendingRow"),
+			top10Row:               document.getElementById("top10Row"),
+			tvRow:                  document.getElementById("tvRow"),
+			trendingHeading:        document.getElementById("trendingHeading"),
+			trendingTag:            document.getElementById("trendingTag"),
+			top10Heading:           document.getElementById("top10Heading"),
+			top10Tag:               document.getElementById("top10Tag"),
+			tvHeading:              document.getElementById("tvHeading"),
+			tvTag:                  document.getElementById("tvTag"),
+			searchResultsSection:   document.getElementById("searchResultsSection"),
+			searchResultsList:      document.getElementById("searchResultsList"),
+			searchResultCount:      document.getElementById("searchResultCount"),
+			profileBtn:             document.getElementById("profileBtn"),
+			profileAvatar:          document.getElementById("profileAvatar"),
+			accountMenu:            document.getElementById("accountMenu"),
+			recentlyWatchedBtn:     document.getElementById("recentlyWatchedBtn"),
+			playerOverlay:          document.getElementById("playerOverlay"),
+			vidkingIframe:          document.getElementById("vidkingIframe"),
+			refreshPlayerBtn:       document.getElementById("refreshPlayerBtn"),
+			closePlayerBtn:         document.getElementById("closePlayerBtn"),
+			playerTitle:            document.getElementById("playerTitle"),
+			searchInput:            document.getElementById("searchInput"),
+			watchHistoryOverlay:    document.getElementById("watchHistoryOverlay"),
+			watchHistoryList:       document.getElementById("watchHistoryList"),
+			closeHistoryBtn:        document.getElementById("closeHistoryBtn"),
+			faqList:                document.getElementById("faqList"),
+			faqJumpBtn:             document.getElementById("faqJumpBtn"),
+		};
+
+		// ─── FAQ content ──────────────────────────────────────────────────────────
 		const faqItems = [
 			{
 				question: "How do I watch something?",
-				answer: "Click any poster card, the hero Watch Now button, or a title from Recently Watched. The player opens with the matching TMDB ID."
+				answer: "Click any poster card or the hero Watch Now button. The player opens immediately with the selected title."
 			},
 			{
 				question: "What happens when I use search?",
@@ -323,215 +345,367 @@
 			},
 			{
 				question: "What to do if a video doesn't play or load?",
-				answer: "Refresh the movie and try again. If it still doesn't work, then switch servers from 2embed to any server, in the Top-left corner. We recommend you switch to Xps"
+				answer: "Hit the Refresh button inside the player. If it still doesn't work, close and reopen the player. We stream directly via 2embed."
 			},
 			{
-				question: "What happens if it redirects it to a malware site?",
-				answer: "If you get redirected to a sketchy site, simply close the tab and return to Nebula Movies. Warning: Do not interact with the sketchy site, never."
+				question: "What if I get redirected to an unexpected site?",
+				answer: "Close the tab immediately and return to Nebula Movies. Never interact with any unexpected site that appears."
 			},
 			{
 				question: "Does the profile menu keep track of what I watched?",
-				answer: "Yes. Every time you play something, it gets stored in Recently Watched locally in your browser, newest items first."
+				answer: "Yes. Every time you play something it is stored in Recently Watched locally in your browser, newest items first."
 			},
 			{
 				question: "Why does the featured hero keep changing?",
-				answer: "The hero section cycles through six popular movies in a loop so the page feels alive, and it resets back to the first item after the last one."
+				answer: "The hero cycles through trending titles so the page feels alive. It loops back to the first after the last one."
 			}
 		];
 
-		let catalog = [];
-		let popularMovie = null;
-		let heroCycleMovies = [];
-		let heroCycleIndex = 0;
-		let heroCycleTimer = null;
-		let watchHistory = [];
-
-		const state = {
-			searchTerm: "",
-			activeType: "all"
-		};
-
-		const refs = {
-			heroBackdrop: document.getElementById("heroBackdrop"),
-			heroBadge: document.getElementById("heroBadge"),
-			heroTitle: document.getElementById("heroTitle"),
-			heroMeta: document.getElementById("heroMeta"),
-			heroDescription: document.getElementById("heroDescription"),
-			heroWatchNow: document.getElementById("heroWatchNow"),
-			rows: document.getElementById("rows"),
-			recentMoviesHeading: document.getElementById("recentMoviesHeading"),
-			recentMoviesTag: document.getElementById("recentMoviesTag"),
-			top10Heading: document.getElementById("top10Heading"),
-			top10Tag: document.getElementById("top10Tag"),
-			topRatedHeading: document.getElementById("topRatedHeading"),
-			topRatedTag: document.getElementById("topRatedTag"),
-			searchResultsSection: document.getElementById("searchResultsSection"),
-			searchResultsList: document.getElementById("searchResultsList"),
-			searchResultCount: document.getElementById("searchResultCount"),
-			recentMoviesRow: document.getElementById("recentMoviesRow"),
-			top10Row: document.getElementById("top10Row"),
-			topRatedRow: document.getElementById("topRatedRow"),
-			profileBtn: document.getElementById("profileBtn"),
-			profileAvatar: document.getElementById("profileAvatar"),
-			accountMenu: document.getElementById("accountMenu"),
-			recentlyWatchedBtn: document.getElementById("recentlyWatchedBtn"),
-			playerOverlay: document.getElementById("playerOverlay"),
-			vidkingIframe: document.getElementById("vidkingIframe"),
-			refreshPlayerBtn: document.getElementById("refreshPlayerBtn"),
-			closePlayerBtn: document.getElementById("closePlayerBtn"),
-			playerTitle: document.getElementById("playerTitle"),
-			searchInput: document.getElementById("searchInput"),
-			watchHistoryOverlay: document.getElementById("watchHistoryOverlay"),
-			watchHistoryList: document.getElementById("watchHistoryList"),
-			closeHistoryBtn: document.getElementById("closeHistoryBtn"),
-			faqList: document.getElementById("faqList"),
-			faqJumpBtn: document.getElementById("faqJumpBtn")
-		};
-
-		const profileAvatarSeeds = [
-			"nebula-red",
-			"cinema-night",
-			"moon-screen",
-			"pixel-pop",
-			"astro-tape",
-			"vhs-hero",
-			"starlight-user",
-			"rewind-mode"
-		];
-
-		const movieGenreMap = {
-			28: "Action",
-			12: "Adventure",
-			16: "Animation",
-			35: "Comedy",
-			80: "Crime",
-			18: "Drama",
-			14: "Fantasy",
-			27: "Horror",
-			878: "Sci-Fi",
-			53: "Thriller"
-		};
-
-		const tvGenreMap = {
-			16: "Animation",
-			18: "Drama",
-			35: "Comedy",
-			80: "Crime",
-			9648: "Mystery",
-			10759: "Action",
-			10765: "Sci-Fi"
-		};
-
-function getPlayerUrl(item) {
-    if (item.type === "tv") {
-        const season = item.season || 1;
-        const episode = item.episode || 1;
-        return `https://www.2embed.cc/embedtv/${item.tmdbId}&s=${season}&e=${episode}`;
-    }
-    return `https://www.2embed.cc/embed/${item.tmdbId}`;
-}
-
-		function setActiveFilterPill() {
-			document.querySelectorAll(".type-filter-btn").forEach((btn) => {
-				const isActive = btn.dataset.filter === state.activeType;
-				btn.classList.toggle("bg-white", isActive);
-				btn.classList.toggle("text-black", isActive);
-			});
-		}
-
-		async function fetchTmdb(path, params = {}) {
-			const query = new URLSearchParams({
-				api_key: TMDB_API_KEY,
-				language: "en-US",
-				...params
-			});
-			const response = await fetch(`${TMDB_BASE_URL}${path}?${query.toString()}`);
-			if (!response.ok) {
-				throw new Error(`TMDB request failed: ${path}`);
+		// ─── 2embed API helpers ───────────────────────────────────────────────────
+		/**
+		 * Fetch from 2embed API. Returns parsed JSON or null on failure.
+		 */
+		async function fetch2embed(path, params = {}) {
+			const query = new URLSearchParams(params);
+			const qs    = query.toString() ? `?${query.toString()}` : "";
+			try {
+				const res = await fetch(`${API_BASE}${path}${qs}`);
+				if (!res.ok) throw new Error(`${res.status} ${path}`);
+				return await res.json();
+			} catch (err) {
+				console.warn("[2embed]", err.message);
+				return null;
 			}
-			return response.json();
 		}
 
-		function isAnimeEntry(rawItem) {
-			const genres = rawItem.genre_ids || [];
-			return rawItem.original_language === "ja" && genres.includes(16);
-		}
+		/**
+		 * Normalise a raw 2embed result item into our internal shape.
+		 * 2embed returns objects like:
+		 *   { imdb_id, title/name, poster, backdrop, rating, year, overview, genre, type }
+		 * Field names vary slightly between endpoints; we handle all variants.
+		 */
+		function normalizeItem(raw, typeHint) {
+			if (!raw) return null;
 
-		function toDisplayGenre(rawItem, type, forcedGenreLabel = "") {
-			if (forcedGenreLabel) {
-				return forcedGenreLabel;
+			// Determine type
+			const type = raw.type || typeHint || (raw.name && !raw.title ? "tv" : "movie");
+
+			// Prefer imdb_id; fall back to id (some endpoints use numeric id)
+			const imdbId = raw.imdb_id || raw.id || "";
+
+			const title = raw.title || raw.name || "Untitled";
+
+			// Poster & backdrop — 2embed may give full URLs or TMDB-style paths
+			function resolveImage(val, fallback) {
+				if (!val) return fallback;
+				if (val.startsWith("http")) return val;
+				// TMDB-style path — use TMDB CDN as before (images are public)
+				return `https://image.tmdb.org/t/p/w500${val}`;
 			}
-			const genreIds = rawItem.genre_ids || [];
-			const map = type === "movie" ? movieGenreMap : tvGenreMap;
-			const match = genreIds.find((id) => map[id]);
-			if (!match && type === "tv" && isAnimeEntry(rawItem)) {
-				return "Anime";
+			function resolveBackdrop(val, fallback) {
+				if (!val) return fallback;
+				if (val.startsWith("http")) return val;
+				return `https://image.tmdb.org/t/p/original${val}`;
 			}
-			return match ? map[match] : (type === "movie" ? "Movie" : "TV");
-		}
 
-		function normalizeItem(rawItem, type, categoryOverride = "") {
-			const title = rawItem.title || rawItem.name || "Untitled";
-			const releaseDate = rawItem.release_date || rawItem.first_air_date || "";
-			const year = releaseDate ? Number(releaseDate.slice(0, 4)) : new Date().getFullYear();
-			const category = categoryOverride || (type === "tv" && isAnimeEntry(rawItem) ? "anime" : type);
+			const posterUrl   = resolveImage(raw.poster   || raw.poster_path, PLACEHOLDER_POSTER);
+			const backdropUrl = resolveBackdrop(raw.backdrop || raw.backdrop_path, PLACEHOLDER_BACKDROP);
+
+			const rating      = parseFloat(raw.rating || raw.vote_average || 0);
+			const releaseYear = raw.year
+				|| (raw.release_date  ? Number(raw.release_date.slice(0,4))  : 0)
+				|| (raw.first_air_date ? Number(raw.first_air_date.slice(0,4)) : 0)
+				|| new Date().getFullYear();
+
+			// Genre may come as a string, an array, or a comma-separated string
+			let genre = "";
+			if (Array.isArray(raw.genre)) {
+				genre = raw.genre[0] || "";
+			} else if (typeof raw.genre === "string") {
+				genre = raw.genre.split(",")[0].trim();
+			} else if (raw.genres && Array.isArray(raw.genres)) {
+				genre = (raw.genres[0] && (raw.genres[0].name || raw.genres[0])) || "";
+			}
+
 			return {
-				tmdbId: rawItem.id,
+				imdbId,
 				type,
-				category,
 				title,
-				backdropUrl: rawItem.backdrop_path ? `${TMDB_BACKDROP_BASE}${rawItem.backdrop_path}` : PLACEHOLDER_BACKDROP,
-				posterUrl: rawItem.poster_path ? `${TMDB_POSTER_BASE}${rawItem.poster_path}` : PLACEHOLDER_POSTER,
-				rating: Number(rawItem.vote_average || 0),
-				releaseYear: year,
-				genre: toDisplayGenre(rawItem, type, category === "anime" ? "Anime" : ""),
-				description: rawItem.overview || "No description available.",
-				season: 1,
-				episode: 1
+				posterUrl,
+				backdropUrl,
+				rating,
+				releaseYear,
+				genre,
+				description: raw.overview || raw.description || "No description available.",
 			};
 		}
 
-		function dedupeByIdAndType(items) {
-			const map = new Map();
-			items.forEach((item) => {
-				map.set(`${item.type}-${item.tmdbId}`, item);
+		/**
+		 * De-duplicate by imdbId (or title fallback).
+		 */
+		function dedupe(items) {
+			const seen = new Set();
+			return items.filter(item => {
+				if (!item) return false;
+				const key = item.imdbId || item.title;
+				if (seen.has(key)) return false;
+				seen.add(key);
+				return true;
 			});
-			return Array.from(map.values());
 		}
 
-		function pickRandomAvatar() {
-			const randomSeed = profileAvatarSeeds[Math.floor(Math.random() * profileAvatarSeeds.length)];
-			return `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(randomSeed)}&radius=50&backgroundType=gradientLinear`;
+		// ─── Player URL builder ───────────────────────────────────────────────────
+		function getPlayerUrl(item, season = 1, episode = 1) {
+			if (!item) return "about:blank";
+			const id = item.imdbId;
+			if (!id) return "about:blank";
+			if (item.type === "tv") {
+				return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
+			}
+			return `https://www.2embed.cc/embed/${id}`;
 		}
 
+		// ─── Data loading ─────────────────────────────────────────────────────────
+		async function loadCatalog() {
+			renderLoadingSkeletons();
+
+			// Parallel fetch: trending movies (week) + trending TV (week)
+			const [trendMovies, trendTv] = await Promise.all([
+				fetch2embed("/trending",   { time_window: "week", page: 1 }),
+				fetch2embed("/trendingtv", { time_window: "week", page: 1 }),
+			]);
+
+			// Normalise
+			const rawMovies = (trendMovies  && (trendMovies.results  || trendMovies.data || trendMovies))  || [];
+			const rawTv     = (trendTv      && (trendTv.results      || trendTv.data    || trendTv))      || [];
+
+			movieCatalog = dedupe(
+				(Array.isArray(rawMovies) ? rawMovies : []).map(r => normalizeItem(r, "movie")).filter(Boolean)
+			);
+			tvCatalog = dedupe(
+				(Array.isArray(rawTv) ? rawTv : []).map(r => normalizeItem(r, "tv")).filter(Boolean)
+			);
+
+			catalog = dedupe([...movieCatalog, ...tvCatalog]);
+
+			// Hero cycle from top trending movies
+			heroCycleItems  = movieCatalog.slice(0, HERO_CYCLE_SIZE);
+			heroCycleIndex  = 0;
+			featuredItem    = heroCycleItems[0] || tvCatalog[0] || null;
+
+			renderHero();
+			renderRows();
+			startHeroCycle();
+		}
+
+		// ─── Search ───────────────────────────────────────────────────────────────
+		async function runSearch(term) {
+			if (!term) {
+				showRows();
+				return;
+			}
+			refs.rows.classList.add("hidden");
+			refs.searchResultsSection.classList.remove("hidden");
+			refs.searchResultsList.innerHTML = `<p class="text-white/50 text-sm">Searching…</p>`;
+
+			// Search movies and/or TV depending on active filter
+			const shouldSearchMovies = state.activeType === "all" || state.activeType === "movie";
+			const shouldSearchTv     = state.activeType === "all" || state.activeType === "tv";
+
+			const [movieRes, tvRes] = await Promise.all([
+				shouldSearchMovies ? fetch2embed("/search",   { q: term, page: 1 }) : Promise.resolve(null),
+				shouldSearchTv     ? fetch2embed("/searchtv", { q: term, page: 1 }) : Promise.resolve(null),
+			]);
+
+			const movieResults = ((movieRes && (movieRes.results || movieRes.data || movieRes)) || []);
+			const tvResults    = ((tvRes    && (tvRes.results    || tvRes.data    || tvRes))    || []);
+
+			const combined = dedupe([
+				...(Array.isArray(movieResults) ? movieResults : []).map(r => normalizeItem(r, "movie")),
+				...(Array.isArray(tvResults)    ? tvResults    : []).map(r => normalizeItem(r, "tv")),
+			].filter(Boolean));
+
+			refs.searchResultCount.textContent = `${combined.length} Match${combined.length === 1 ? "" : "es"}`;
+
+			if (!combined.length) {
+				refs.searchResultsList.innerHTML = `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">No titles match your search.</p>`;
+				return;
+			}
+			refs.searchResultsList.innerHTML = combined.map(createSearchResultCard).join("");
+		}
+
+		// ─── Render helpers ───────────────────────────────────────────────────────
+		function showRows() {
+			refs.rows.classList.remove("hidden");
+			refs.searchResultsSection.classList.add("hidden");
+		}
+
+		function renderLoadingSkeletons() {
+			const skeletonCard = `<div class="skeleton w-[150px] md:w-[180px] flex-shrink-0 aspect-[2/3] rounded-lg"></div>`;
+			const skeletons    = Array(8).fill(skeletonCard).join("");
+			refs.trendingRow.innerHTML = skeletons;
+			refs.top10Row.innerHTML    = skeletons;
+			refs.tvRow.innerHTML       = skeletons;
+		}
+
+		function renderRows() {
+			const activeMovies = state.activeType === "tv"    ? []           : movieCatalog;
+			const activeTv     = state.activeType === "movie" ? []           : tvCatalog;
+			const trending     = state.activeType === "tv"    ? activeTv     :
+			                     state.activeType === "movie" ? activeMovies : [...activeMovies, ...activeTv];
+			const top10        = [...activeMovies].slice(0, 10);
+
+			refs.trendingRow.innerHTML = trending.slice(0,12).map(createStandardCard).join("") || emptyHtml("Nothing trending right now.");
+			refs.top10Row.innerHTML    = top10.map((item, i) => createTop10Card(item, i + 1)).join("") || emptyHtml("Top 10 list is empty.");
+			refs.tvRow.innerHTML       = activeTv.slice(0,12).map(createStandardCard).join("") || emptyHtml("No TV shows available.");
+
+			updateSectionLabels();
+			enhanceCarousels();
+		}
+
+		function renderHero() {
+			const item = featuredItem;
+			if (!item) {
+				refs.heroTitle.textContent       = "No featured title";
+				refs.heroDescription.textContent = "Content is loading…";
+				refs.heroMeta.innerHTML          = "";
+				refs.heroBackdrop.src            = PLACEHOLDER_BACKDROP;
+				return;
+			}
+			const badge = item.type === "tv" ? "Trending TV Show" : "Trending Movie";
+			refs.heroBadge.textContent        = badge;
+			refs.heroTitle.textContent        = item.title;
+			refs.heroDescription.textContent  = item.description;
+			refs.heroBackdrop.src             = item.backdropUrl;
+			refs.heroMeta.innerHTML = `
+				${item.rating ? `<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">⭐ ${item.rating.toFixed(1)}</span>` : ""}
+				${item.releaseYear ? `<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${item.releaseYear}</span>` : ""}
+				${item.genre ? `<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${item.genre}</span>` : ""}
+			`;
+		}
+
+		// ─── Card templates ───────────────────────────────────────────────────────
+		function createStandardCard(item) {
+			return `
+				<article class="card-shine group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 hover:shadow-[0_16px_35px_rgba(0,0,0,0.45)] md:w-[180px]">
+					<button class="movie-card w-full text-left" data-imdb="${item.imdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
+						<div class="relative aspect-[2/3] overflow-hidden">
+							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='${PLACEHOLDER_POSTER}'" />
+							<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent"></div>
+						</div>
+						<div class="space-y-1 px-3 py-2">
+							<h4 class="line-clamp-1 text-sm font-semibold">${item.title}</h4>
+							<p class="text-xs text-white/65">${item.releaseYear}${item.genre ? " • " + item.genre : ""}</p>
+						</div>
+					</button>
+				</article>
+			`;
+		}
+
+		function createTop10Card(item, rank) {
+			return `
+				<article class="group relative flex w-[200px] flex-shrink-0 snap-start items-end md:w-[230px]">
+					<span class="top-rank-number absolute -left-2 bottom-2 z-10">${rank}</span>
+					<button class="movie-card card-shine relative ml-10 w-full overflow-hidden rounded-lg border border-white/15 bg-white/5 text-left transition duration-300 hover:scale-[1.04] hover:border-white/40" data-imdb="${item.imdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
+						<div class="relative aspect-[2/3] overflow-hidden">
+							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='${PLACEHOLDER_POSTER}'" />
+						</div>
+					</button>
+				</article>
+			`;
+		}
+
+		function createSearchResultCard(item) {
+			return `
+				<article class="search-result-card overflow-hidden rounded-xl border border-white/20 p-3 transition duration-300 hover:border-white/45 hover:bg-white/10">
+					<button class="movie-card flex w-full items-center gap-4 text-left" data-imdb="${item.imdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
+						<img src="${item.posterUrl}" alt="${item.title} poster" class="h-24 w-16 flex-shrink-0 rounded-md object-cover md:h-28 md:w-20" loading="lazy" onerror="this.src='${PLACEHOLDER_POSTER}'" />
+						<div class="min-w-0">
+							<h4 class="font-display truncate text-lg font-bold">${item.title}</h4>
+							<p class="mt-1 text-sm text-white/70">${item.releaseYear}${item.genre ? " • " + item.genre : ""}${item.rating ? " • ★ " + item.rating.toFixed(1) : ""}</p>
+							<p class="mt-2 line-clamp-2 text-sm text-white/60">${item.description}</p>
+						</div>
+					</button>
+				</article>
+			`;
+		}
+
+		function emptyHtml(msg) {
+			return `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">${msg}</p>`;
+		}
+
+		// ─── Section label updates ────────────────────────────────────────────────
+		function updateSectionLabels() {
+			const t = state.activeType;
+			refs.trendingHeading.textContent = t === "tv" ? "Trending TV Shows" : t === "movie" ? "Trending Movies" : "Trending This Week";
+			refs.trendingTag.textContent     = t === "tv" ? "Top Series" : "Hot Now";
+			refs.top10Heading.textContent    = t === "tv" ? "Top 10 TV" : "Top 10 Movies";
+			refs.tvHeading.textContent       = t === "movie" ? "TV Shows" : "Trending TV Shows";
+		}
+
+		// ─── Hero cycling ─────────────────────────────────────────────────────────
+		function startHeroCycle() {
+			stopHeroCycle();
+			if (heroCycleItems.length < 2) return;
+			heroCycleTimer = setInterval(() => {
+				heroCycleIndex = (heroCycleIndex + 1) % heroCycleItems.length;
+				featuredItem = heroCycleItems[heroCycleIndex];
+				renderHero();
+			}, HERO_CYCLE_INTERVAL_MS);
+		}
+		function stopHeroCycle() {
+			if (heroCycleTimer) { clearInterval(heroCycleTimer); heroCycleTimer = null; }
+		}
+
+		// ─── Player ───────────────────────────────────────────────────────────────
+		function openPlayer(item) {
+			addToWatchHistory(item);
+			const url = getPlayerUrl(item);
+			refs.vidkingIframe.dataset.src = url;
+			refs.vidkingIframe.src         = url;
+			refs.playerTitle.textContent   = item.title;
+			refs.playerOverlay.classList.remove("pointer-events-none", "opacity-0");
+			document.body.classList.add("overflow-hidden");
+		}
+
+		function refreshPlayer() {
+			const src = refs.vidkingIframe.dataset.src || refs.vidkingIframe.src;
+			if (!src || src === "about:blank") return;
+			refs.vidkingIframe.src = "about:blank";
+			setTimeout(() => { refs.vidkingIframe.src = src; }, 80);
+		}
+
+		function closePlayer() {
+			refs.playerOverlay.classList.add("pointer-events-none", "opacity-0");
+			refs.vidkingIframe.src = "about:blank";
+			document.body.classList.remove("overflow-hidden");
+		}
+
+		// Find an item from catalog by imdb id + type
+		function findItem(imdbId, type) {
+			return catalog.find(i => String(i.imdbId) === String(imdbId) && i.type === type)
+				|| catalog.find(i => String(i.imdbId) === String(imdbId));
+		}
+
+		// ─── Watch history ────────────────────────────────────────────────────────
 		function loadWatchHistory() {
 			try {
-				const raw = localStorage.getItem(WATCH_HISTORY_STORAGE_KEY);
+				const raw = localStorage.getItem(WATCH_HISTORY_KEY);
 				watchHistory = raw ? JSON.parse(raw) : [];
-				if (!Array.isArray(watchHistory)) {
-					watchHistory = [];
-				}
-			} catch {
-				watchHistory = [];
-			}
+				if (!Array.isArray(watchHistory)) watchHistory = [];
+			} catch { watchHistory = []; }
 		}
 
 		function saveWatchHistory() {
-			localStorage.setItem(WATCH_HISTORY_STORAGE_KEY, JSON.stringify(watchHistory));
+			localStorage.setItem(WATCH_HISTORY_KEY, JSON.stringify(watchHistory));
 		}
 
 		function addToWatchHistory(item) {
-			watchHistory = watchHistory.filter((entry) => !(entry.tmdbId === item.tmdbId && entry.type === item.type));
+			watchHistory = watchHistory.filter(e => !(e.imdbId === item.imdbId && e.type === item.type));
 			watchHistory.unshift({
-				tmdbId: item.tmdbId,
-				type: item.type,
-				category: item.category,
-				title: item.title,
-				posterUrl: item.posterUrl,
-				releaseYear: item.releaseYear,
-				genre: item.genre,
-				rating: item.rating,
-				watchedAt: Date.now()
+				imdbId: item.imdbId, type: item.type, title: item.title,
+				posterUrl: item.posterUrl, releaseYear: item.releaseYear,
+				genre: item.genre, rating: item.rating, watchedAt: Date.now()
 			});
 			watchHistory = watchHistory.slice(0, 40);
 			saveWatchHistory();
@@ -539,24 +713,21 @@ function getPlayerUrl(item) {
 
 		function renderWatchHistory() {
 			if (!watchHistory.length) {
-				renderEmptyState(refs.watchHistoryList, "No watch activity yet. Play something to see it here.");
+				refs.watchHistoryList.innerHTML = `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">No watch activity yet. Play something to see it here.</p>`;
 				return;
 			}
-
-			refs.watchHistoryList.innerHTML = watchHistory.map((item) => {
-				return `
-					<article class="rounded-xl border border-white/15 bg-white/5 p-3 transition hover:border-white/35">
-						<button class="history-item-btn flex w-full items-center gap-4 text-left" data-id="${item.tmdbId}" data-type="${item.type}">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-20 w-14 flex-shrink-0 rounded-md object-cover" loading="lazy" />
-							<div class="min-w-0">
-								<p class="font-display truncate text-base font-bold">${item.title}</p>
-								<p class="mt-0.5 text-sm text-white/70">${item.releaseYear} • ${item.genre} • ★ ${Number(item.rating).toFixed(1)}</p>
-								<p class="mt-1 text-xs uppercase tracking-[0.12em] text-white/45">Tap to Play Again</p>
-							</div>
-						</button>
-					</article>
-				`;
-			}).join("");
+			refs.watchHistoryList.innerHTML = watchHistory.map(item => `
+				<article class="rounded-xl border border-white/15 bg-white/5 p-3 transition hover:border-white/35">
+					<button class="history-item-btn flex w-full items-center gap-4 text-left" data-imdb="${item.imdbId}" data-type="${item.type}">
+						<img src="${item.posterUrl}" alt="${item.title} poster" class="h-20 w-14 flex-shrink-0 rounded-md object-cover" loading="lazy" onerror="this.src='${PLACEHOLDER_POSTER}'" />
+						<div class="min-w-0">
+							<p class="font-display truncate text-base font-bold">${item.title}</p>
+							<p class="mt-0.5 text-sm text-white/70">${item.releaseYear}${item.genre ? " • " + item.genre : ""}${item.rating ? " • ★ " + Number(item.rating).toFixed(1) : ""}</p>
+							<p class="mt-1 text-xs uppercase tracking-[0.12em] text-white/45">Tap to Play Again</p>
+						</div>
+					</button>
+				</article>
+			`).join("");
 		}
 
 		function openWatchHistoryModal() {
@@ -570,512 +741,195 @@ function getPlayerUrl(item) {
 			document.body.classList.remove("overflow-hidden");
 		}
 
-		function closeAccountMenu() {
-			refs.accountMenu.hidden = true;
-			refs.profileBtn.setAttribute("aria-expanded", "false");
-		}
-
+		// ─── Account menu ─────────────────────────────────────────────────────────
 		function toggleAccountMenu() {
 			const willOpen = refs.accountMenu.hidden;
 			refs.accountMenu.hidden = !willOpen;
 			refs.profileBtn.setAttribute("aria-expanded", String(willOpen));
 		}
-
-		function stopHeroCycle() {
-			if (heroCycleTimer) {
-				clearInterval(heroCycleTimer);
-				heroCycleTimer = null;
-			}
+		function closeAccountMenu() {
+			refs.accountMenu.hidden = true;
+			refs.profileBtn.setAttribute("aria-expanded", "false");
 		}
 
-		function startHeroCycle() {
-			stopHeroCycle();
-			if (heroCycleMovies.length < 2) {
-				return;
-			}
-			heroCycleTimer = setInterval(() => {
-				heroCycleIndex = (heroCycleIndex + 1) % heroCycleMovies.length;
-				popularMovie = heroCycleMovies[heroCycleIndex];
-				renderHero();
-			}, HERO_CYCLE_INTERVAL_MS);
-		}
-
-		function scrollCarousel(rowId, direction) {
-			const row = document.getElementById(rowId);
-			if (!row) {
-				return;
-			}
-			const amount = direction === "left" ? -360 : 360;
-			row.scrollBy({ left: amount, behavior: "smooth" });
-		}
-
-		async function loadCatalogFromTmdb() {
-			renderLoadingState();
-			try {
-				const [popularMovies, recentMovies, topRatedMovies, popularTv, animeSeries] = await Promise.all([
-					fetchTmdb("/movie/popular", { page: "1" }),
-					fetchTmdb("/movie/now_playing", { page: "1" }),
-					fetchTmdb("/movie/top_rated", { page: "1" }),
-					fetchTmdb("/tv/popular", { page: "1" }),
-					fetchTmdb("/discover/tv", { with_genres: "16", with_original_language: "ja", sort_by: "popularity.desc", page: "1" })
-				]);
-
-				const moviePopularItems = (popularMovies.results || []).map((item) => normalizeItem(item, "movie"));
-				const movieRecentItems = (recentMovies.results || []).map((item) => normalizeItem(item, "movie"));
-				const movieTopRatedItems = (topRatedMovies.results || []).map((item) => normalizeItem(item, "movie"));
-				const tvItems = (popularTv.results || []).map((item) => normalizeItem(item, "tv", isAnimeEntry(item) ? "anime" : "tv"));
-				const animeItems = (animeSeries.results || []).map((item) => normalizeItem(item, "tv", "anime"));
-
-				catalog = dedupeByIdAndType([
-					...moviePopularItems,
-					...movieRecentItems,
-					...movieTopRatedItems,
-					...tvItems,
-					...animeItems
-				]);
-
-				popularMovie = moviePopularItems[0] || catalog.find((item) => item.type === "movie") || catalog[0] || null;
-				heroCycleMovies = dedupeByIdAndType([
-					...moviePopularItems,
-					...movieRecentItems,
-					...movieTopRatedItems
-				]).filter((item) => item.type === "movie").slice(0, HERO_CYCLE_SIZE);
-				heroCycleIndex = 0;
-				if (heroCycleMovies.length) {
-					popularMovie = heroCycleMovies[0];
-				}
-				renderHero();
-				renderMovies();
-				startHeroCycle();
-			} catch (error) {
-				refs.heroTitle.textContent = "Unable to load TMDB data";
-				refs.heroDescription.textContent = "Check your API key, TMDB request quota, or network connection and refresh.";
-				refs.heroMeta.innerHTML = "";
-				renderEmptyState(refs.recentMoviesRow, "TMDB fetch failed. Please verify the API key and reload.");
-				renderEmptyState(refs.top10Row, "TMDB fetch failed. Please verify the API key and reload.");
-				renderEmptyState(refs.topRatedRow, "TMDB fetch failed. Please verify the API key and reload.");
-				stopHeroCycle();
-				console.error(error);
-			}
-		}
-
-		function renderLoadingState() {
-			renderEmptyState(refs.recentMoviesRow, "Loading movies from TMDB...");
-			renderEmptyState(refs.top10Row, "Loading movies from TMDB...");
-			renderEmptyState(refs.topRatedRow, "Loading movies from TMDB...");
-		}
-
-		function createStandardCard(item) {
-			return `
-				<article class="card-shine group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 hover:shadow-[0_16px_35px_rgba(0,0,0,0.45)] md:w-[180px]">
-					<button class="movie-card w-full text-left" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<div class="relative aspect-[2/3] overflow-hidden">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
-							<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent"></div>
-						</div>
-						<div class="space-y-1 px-3 py-2">
-							<h4 class="line-clamp-1 text-sm font-semibold">${item.title}</h4>
-							<p class="text-xs text-white/65">${item.releaseYear} • ${item.genre}</p>
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function createTop10Card(item, rank) {
-			return `
-				<article class="group relative flex w-[200px] flex-shrink-0 snap-start items-end md:w-[230px]">
-					<span class="top-rank-number absolute -left-2 bottom-2 z-10">${rank}</span>
-					<button class="movie-card card-shine relative ml-10 w-full overflow-hidden rounded-lg border border-white/15 bg-white/5 text-left transition duration-300 hover:scale-[1.04] hover:border-white/40" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<div class="relative aspect-[2/3] overflow-hidden">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function createTopRatedCard(item) {
-			return `
-				<article class="group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 md:w-[180px]">
-					<button class="movie-card w-full text-left" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<div class="relative aspect-[2/3] overflow-hidden">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
-							<div class="absolute right-2 top-2 translate-y-1 rounded-full border border-white/35 bg-black/70 px-2 py-1 text-xs font-semibold opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">★ ${item.rating.toFixed(1)}</div>
-						</div>
-						<div class="space-y-1 px-3 py-2">
-							<h4 class="line-clamp-1 text-sm font-semibold">${item.title}</h4>
-							<p class="text-xs text-white/65">${item.releaseYear}</p>
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function createSearchResultCard(item) {
-			return `
-				<article class="search-result-card overflow-hidden rounded-xl border border-white/20 p-3 transition duration-300 hover:border-white/45 hover:bg-white/10">
-					<button class="movie-card flex w-full items-center gap-4 text-left" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<img src="${item.posterUrl}" alt="${item.title} poster" class="h-24 w-16 flex-shrink-0 rounded-md object-cover md:h-28 md:w-20" loading="lazy" />
-						<div class="min-w-0">
-							<h4 class="font-display truncate text-lg font-bold">${item.title}</h4>
-							<p class="mt-1 text-sm text-white/70">${item.releaseYear} • ${item.genre} • ★ ${item.rating.toFixed(1)}</p>
-							<p class="mt-2 line-clamp-2 text-sm text-white/60">${item.description}</p>
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function renderHero() {
-			if (!popularMovie) {
-				refs.heroBackdrop.src = PLACEHOLDER_BACKDROP;
-				refs.heroBadge.textContent = "No Featured Title";
-				refs.heroTitle.textContent = "No featured title";
-				refs.heroDescription.textContent = "No TMDB data is currently available.";
-				refs.heroMeta.innerHTML = "";
-				return;
-			}
-			const badgeByCategory = {
-				movie: "Popular Movie",
-				tv: "Popular TV Show",
-				anime: "Popular Anime"
-			};
-			refs.heroBackdrop.src = popularMovie.backdropUrl;
-			refs.heroBadge.textContent = badgeByCategory[popularMovie.category] || (popularMovie.type === "tv" ? "Popular TV Show" : "Popular Movie");
-			refs.heroTitle.textContent = popularMovie.title;
-			refs.heroDescription.textContent = popularMovie.description;
-			refs.heroMeta.innerHTML = `
-				<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">⭐ ${popularMovie.rating.toFixed(1)}</span>
-				<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${popularMovie.releaseYear}</span>
-				<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${popularMovie.genre}</span>
-			`;
-		}
-
-		function getFilteredContent() {
-			return catalog.filter((item) => {
-				const matchesSearch = item.title.toLowerCase().includes(state.searchTerm.toLowerCase());
-				const matchesType = state.activeType === "all" || item.category === state.activeType;
-				return matchesSearch && matchesType;
+		// ─── Filter pills ─────────────────────────────────────────────────────────
+		function setActiveFilterPill() {
+			document.querySelectorAll(".type-filter-btn").forEach(btn => {
+				const active = btn.dataset.filter === state.activeType;
+				btn.classList.toggle("bg-white", active);
+				btn.classList.toggle("text-black", active);
 			});
 		}
 
-		function renderEmptyState(container, message) {
-			container.innerHTML = `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">${message}</p>`;
+		// ─── Carousels ────────────────────────────────────────────────────────────
+		function enhanceCarousels() {
+			document.querySelectorAll(".carousel-row").forEach(row => {
+				row.classList.add("snap-x", "snap-mandatory", "scroll-smooth");
+			});
 		}
 
+		function scrollCarousel(rowId, dir) {
+			const row = document.getElementById(rowId);
+			if (row) row.scrollBy({ left: dir === "left" ? -360 : 360, behavior: "smooth" });
+		}
+
+		// ─── FAQ ─────────────────────────────────────────────────────────────────
 		function renderFAQ() {
-			refs.faqList.innerHTML = faqItems.map((item, index) => `
-				<article class="faq-item overflow-hidden rounded-2xl border border-white/10" aria-expanded="${index === 0 ? "true" : "false"}">
-					<button class="faq-toggle flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6" data-faq-index="${index}" aria-expanded="${index === 0 ? "true" : "false"}">
+			refs.faqList.innerHTML = faqItems.map((item, i) => `
+				<article class="faq-item overflow-hidden rounded-2xl border border-white/10" aria-expanded="${i === 0}">
+					<button class="faq-toggle flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6" aria-expanded="${i === 0}">
 						<span class="font-display text-base font-bold md:text-lg">${item.question}</span>
 						<span class="faq-icon inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg text-white/85">+</span>
 					</button>
-					<div class="faq-panel px-5 pb-5 ${index === 0 ? "block" : "hidden"} md:px-6">
+					<div class="faq-panel px-5 pb-5 ${i === 0 ? "block" : "hidden"} md:px-6">
 						<p class="max-w-3xl text-sm leading-relaxed md:text-base">${item.answer}</p>
 					</div>
 				</article>
 			`).join("");
 		}
 
-		function updateSectionLabels() {
-			const labelsByType = {
-				all: {
-					recent: "Recent Movies",
-					top10: "Top 10 Movies",
-					topRated: "Top Rated",
-					recentTag: "Fresh Picks",
-					top10Tag: "Most Watched",
-					topRatedTag: "Critic Favorites"
-				},
-				movie: {
-					recent: "Recent Movies",
-					top10: "Top 10 Movies",
-					topRated: "Top Rated Movies",
-					recentTag: "Fresh Picks",
-					top10Tag: "Most Watched",
-					topRatedTag: "Critic Favorites"
-				},
-				tv: {
-					recent: "Recent TV Shows",
-					top10: "Top 10 TV Shows",
-					topRated: "Top Rated TV Shows",
-					recentTag: "New Episodes",
-					top10Tag: "Trending Series",
-					topRatedTag: "Viewer Favorites"
-				},
-				anime: {
-					recent: "Recent Anime",
-					top10: "Top 10 Anime",
-					topRated: "Top Rated Anime",
-					recentTag: "Latest Arcs",
-					top10Tag: "Most Watched",
-					topRatedTag: "Community Favorites"
-				}
-			};
-
-			const labels = labelsByType[state.activeType] || labelsByType.all;
-			refs.recentMoviesHeading.textContent = labels.recent;
-			refs.top10Heading.textContent = labels.top10;
-			refs.topRatedHeading.textContent = labels.topRated;
-			refs.recentMoviesTag.textContent = labels.recentTag;
-			refs.top10Tag.textContent = labels.top10Tag;
-			refs.topRatedTag.textContent = labels.topRatedTag;
-		}
-
-		function renderMovies() {
-			updateSectionLabels();
-
-			const filtered = getFilteredContent();
-			const isSearching = state.searchTerm.length > 0;
-
-			if (isSearching) {
-				refs.rows.classList.add("hidden");
-				refs.searchResultsSection.classList.remove("hidden");
-				refs.searchResultCount.textContent = `${filtered.length} Match${filtered.length === 1 ? "" : "es"}`;
-				refs.searchResultsList.innerHTML = filtered.map(createSearchResultCard).join("");
-				if (!filtered.length) {
-					renderEmptyState(refs.searchResultsList, "No titles match your search.");
-				}
-				return;
-			}
-
-			refs.rows.classList.remove("hidden");
-			refs.searchResultsSection.classList.add("hidden");
-
-			const recent = [...filtered].sort((a, b) => b.releaseYear - a.releaseYear).slice(0, 12);
-			const top10 = [...filtered].sort((a, b) => b.rating - a.rating).slice(0, 10);
-			const topRated = [...filtered].filter((item) => item.rating >= 8).sort((a, b) => b.rating - a.rating).slice(0, 12);
-
-			refs.recentMoviesRow.innerHTML = recent.map(createStandardCard).join("");
-			refs.top10Row.innerHTML = top10.map((item, index) => createTop10Card(item, index + 1)).join("");
-			refs.topRatedRow.innerHTML = topRated.map(createTopRatedCard).join("");
-
-			if (!recent.length) {
-				renderEmptyState(refs.recentMoviesRow, "No recent matches found for your current filters.");
-			}
-			if (!top10.length) {
-				renderEmptyState(refs.top10Row, "Top 10 list is empty for this filter.");
-			}
-			if (!topRated.length) {
-				renderEmptyState(refs.topRatedRow, "No top rated matches found right now.");
-			}
-
-			enhanceCarousels();
-		}
-
-		function updateHeroByActiveFilter() {
-			if (!catalog.length) {
-				return;
-			}
-
-			if (state.activeType === "all") {
-				if (heroCycleMovies.length) {
-					heroCycleIndex = Math.max(0, heroCycleIndex % heroCycleMovies.length);
-					popularMovie = heroCycleMovies[heroCycleIndex];
-				}
-				renderHero();
-				startHeroCycle();
-				return;
-			}
-
-			stopHeroCycle();
-			const scoped = catalog.filter((item) => item.category === state.activeType);
-			popularMovie = scoped[0] || catalog[0] || null;
-			renderHero();
-		}
-
-		function enhanceCarousels() {
-			document.querySelectorAll(".carousel-row").forEach((row) => {
-				row.classList.add("snap-x", "snap-mandatory", "scroll-smooth");
-			});
-		}
-
-		function openPlayer(item) {
-			addToWatchHistory(item);
-			refs.vidkingIframe.dataset.src = getPlayerUrl(item);
-			refs.playerTitle.textContent = item.title;
-			refs.vidkingIframe.src = refs.vidkingIframe.dataset.src;
-			refs.playerOverlay.classList.remove("pointer-events-none", "opacity-0");
-			document.body.classList.add("overflow-hidden");
-		}
-
-		function refreshPlayer() {
-			const currentSrc = refs.vidkingIframe.dataset.src || refs.vidkingIframe.src;
-			if (!currentSrc || currentSrc === "about:blank") {
-				return;
-			}
-			refs.vidkingIframe.src = "about:blank";
-			window.setTimeout(() => {
-				refs.vidkingIframe.src = currentSrc;
-			}, 60);
-		}
-
-		function closePlayer() {
-			refs.playerOverlay.classList.add("pointer-events-none", "opacity-0");
-			refs.vidkingIframe.src = "about:blank";
-			document.body.classList.remove("overflow-hidden");
-		}
-
-		function findItemByIdAndType(id, type) {
-			return catalog.find((item) => String(item.tmdbId) === String(id) && item.type === type);
-		}
-
+		// ─── Event binding ────────────────────────────────────────────────────────
 		function bindEvents() {
+			// FAQ jump
 			refs.faqJumpBtn.addEventListener("click", () => {
-				document.getElementById("faqSection").scrollIntoView({ behavior: "smooth", block: "start" });
+				document.getElementById("faqSection").scrollIntoView({ behavior: "smooth" });
 			});
 
-			refs.refreshPlayerBtn.addEventListener("click", refreshPlayer);
-
-			refs.profileBtn.addEventListener("click", (event) => {
-				event.stopPropagation();
-				toggleAccountMenu();
-			});
-
-			refs.recentlyWatchedBtn.addEventListener("click", () => {
-				closeAccountMenu();
-				openWatchHistoryModal();
-			});
-
-			refs.closeHistoryBtn.addEventListener("click", closeWatchHistoryModal);
-
-			refs.watchHistoryOverlay.addEventListener("click", (event) => {
-				if (event.target === refs.watchHistoryOverlay) {
-					closeWatchHistoryModal();
+			// FAQ accordion
+			refs.faqList.addEventListener("click", e => {
+				const toggle = e.target.closest(".faq-toggle");
+				if (!toggle) return;
+				const item      = toggle.closest(".faq-item");
+				const panel     = item.querySelector(".faq-panel");
+				const expanded  = toggle.getAttribute("aria-expanded") === "true";
+				// Collapse all
+				refs.faqList.querySelectorAll(".faq-item").forEach(fi => {
+					fi.setAttribute("aria-expanded", "false");
+					fi.querySelector(".faq-toggle").setAttribute("aria-expanded", "false");
+					fi.querySelector(".faq-panel").classList.replace("block", "hidden");
+				});
+				// Expand clicked if it was collapsed
+				if (!expanded) {
+					item.setAttribute("aria-expanded", "true");
+					toggle.setAttribute("aria-expanded", "true");
+					panel.classList.replace("hidden", "block");
 				}
 			});
 
-			document.addEventListener("click", (event) => {
-				if (!event.target.closest("#profileBtn") && !event.target.closest("#accountMenu")) {
-					closeAccountMenu();
-				}
-			});
-
-			refs.heroWatchNow.addEventListener("click", () => {
-				if (popularMovie) {
-					openPlayer(popularMovie);
-				}
-			});
-
-			refs.closePlayerBtn.addEventListener("click", closePlayer);
-
-			refs.playerOverlay.addEventListener("click", (event) => {
-				if (event.target === refs.playerOverlay) {
-					closePlayer();
-				}
-			});
-
-			document.addEventListener("keydown", (event) => {
-				if (event.key === "Escape") {
-					closeAccountMenu();
-					closeWatchHistoryModal();
-					closePlayer();
-				}
-			});
-
-			document.querySelectorAll(".type-filter-btn").forEach((btn) => {
+			// Type filter pills
+			document.querySelectorAll(".type-filter-btn").forEach(btn => {
 				btn.addEventListener("click", () => {
 					state.activeType = btn.dataset.filter;
 					setActiveFilterPill();
-					updateHeroByActiveFilter();
-					renderMovies();
-				});
-			});
-
-			refs.searchInput.addEventListener("input", (event) => {
-				state.searchTerm = event.target.value.trim();
-				renderMovies();
-			});
-
-			document.getElementById("rows").addEventListener("click", (event) => {
-				const card = event.target.closest(".movie-card");
-				if (!card) {
-					return;
-				}
-				const { id, type } = card.dataset;
-				const selected = findItemByIdAndType(id, type);
-				if (selected) {
-					openPlayer(selected);
-				}
-			});
-
-			refs.searchResultsList.addEventListener("click", (event) => {
-				const card = event.target.closest(".movie-card");
-				if (!card) {
-					return;
-				}
-				const { id, type } = card.dataset;
-				const selected = findItemByIdAndType(id, type);
-				if (selected) {
-					openPlayer(selected);
-				}
-			});
-
-			document.querySelectorAll(".carousel-nav-btn").forEach((button) => {
-				button.addEventListener("click", () => {
-					scrollCarousel(button.dataset.row, button.dataset.dir);
-				});
-			});
-
-			document.querySelectorAll(".carousel-row").forEach((row) => {
-				row.addEventListener("keydown", (event) => {
-					if (event.key === "ArrowRight") {
-						event.preventDefault();
-						row.scrollBy({ left: 320, behavior: "smooth" });
+					// Update hero
+					if (state.activeType === "all") {
+						heroCycleItems = movieCatalog.slice(0, HERO_CYCLE_SIZE);
+						featuredItem   = heroCycleItems[0] || tvCatalog[0] || null;
+						startHeroCycle();
+					} else if (state.activeType === "movie") {
+						stopHeroCycle();
+						featuredItem = movieCatalog[0] || null;
+					} else {
+						stopHeroCycle();
+						featuredItem = tvCatalog[0] || null;
 					}
-					if (event.key === "ArrowLeft") {
-						event.preventDefault();
-						row.scrollBy({ left: -320, behavior: "smooth" });
-					}
+					renderHero();
+					renderRows();
 				});
 			});
 
-			refs.watchHistoryList.addEventListener("click", (event) => {
-				const card = event.target.closest(".history-item-btn");
-				if (!card) {
-					return;
-				}
-				const selected = findItemByIdAndType(card.dataset.id, card.dataset.type);
-				if (selected) {
-					closeWatchHistoryModal();
-					openPlayer(selected);
-				}
+			// Search
+			refs.searchInput.addEventListener("input", e => {
+				const term = e.target.value.trim();
+				state.searchTerm = term;
+				clearTimeout(state.searchDebounceTimer);
+				if (!term) { showRows(); return; }
+				state.searchDebounceTimer = setTimeout(() => runSearch(term), 420);
 			});
 
-			refs.faqList.addEventListener("click", (event) => {
-				const toggle = event.target.closest(".faq-toggle");
-				if (!toggle) {
-					return;
+			// Hero watch now
+			refs.heroWatchNow.addEventListener("click", () => {
+				if (featuredItem) openPlayer(featuredItem);
+			});
+
+			// Card clicks — rows
+			refs.rows.addEventListener("click", e => {
+				const card = e.target.closest(".movie-card");
+				if (!card) return;
+				const item = findItem(card.dataset.imdb, card.dataset.type);
+				if (item) openPlayer(item);
+			});
+
+			// Card clicks — search results
+			refs.searchResultsList.addEventListener("click", e => {
+				const card = e.target.closest(".movie-card");
+				if (!card) return;
+				// Build a minimal item from the card's dataset if not in catalog
+				let item = findItem(card.dataset.imdb, card.dataset.type);
+				if (!item) {
+					// Build from DOM data attrs as fallback
+					item = { imdbId: card.dataset.imdb, type: card.dataset.type, title: card.getAttribute("aria-label")?.replace("Play ","") || "" };
 				}
+				if (item) openPlayer(item);
+			});
 
-				const item = toggle.closest(".faq-item");
-				const panel = item.querySelector(".faq-panel");
-				const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+			// Carousel nav
+			document.querySelectorAll(".carousel-nav-btn").forEach(btn => {
+				btn.addEventListener("click", () => scrollCarousel(btn.dataset.row, btn.dataset.dir));
+			});
 
-				refs.faqList.querySelectorAll(".faq-item").forEach((faqItem) => {
-					faqItem.setAttribute("aria-expanded", "false");
-					faqItem.querySelector(".faq-toggle").setAttribute("aria-expanded", "false");
-					faqItem.querySelector(".faq-panel").classList.add("hidden");
-					faqItem.querySelector(".faq-panel").classList.remove("block");
+			// Keyboard carousel
+			document.querySelectorAll(".carousel-row").forEach(row => {
+				row.addEventListener("keydown", e => {
+					if (e.key === "ArrowRight") { e.preventDefault(); row.scrollBy({ left:  320, behavior: "smooth" }); }
+					if (e.key === "ArrowLeft")  { e.preventDefault(); row.scrollBy({ left: -320, behavior: "smooth" }); }
 				});
+			});
 
-				if (!isExpanded) {
-					item.setAttribute("aria-expanded", "true");
-					toggle.setAttribute("aria-expanded", "true");
-					panel.classList.remove("hidden");
-					panel.classList.add("block");
-				}
+			// Player
+			refs.refreshPlayerBtn.addEventListener("click", refreshPlayer);
+			refs.closePlayerBtn.addEventListener("click", closePlayer);
+			refs.playerOverlay.addEventListener("click", e => { if (e.target === refs.playerOverlay) closePlayer(); });
+
+			// Profile / account menu
+			refs.profileBtn.addEventListener("click", e => { e.stopPropagation(); toggleAccountMenu(); });
+			refs.recentlyWatchedBtn.addEventListener("click", () => { closeAccountMenu(); openWatchHistoryModal(); });
+			document.addEventListener("click", e => {
+				if (!e.target.closest("#profileBtn") && !e.target.closest("#accountMenu")) closeAccountMenu();
+			});
+
+			// Watch history modal
+			refs.closeHistoryBtn.addEventListener("click", closeWatchHistoryModal);
+			refs.watchHistoryOverlay.addEventListener("click", e => { if (e.target === refs.watchHistoryOverlay) closeWatchHistoryModal(); });
+			refs.watchHistoryList.addEventListener("click", e => {
+				const card = e.target.closest(".history-item-btn");
+				if (!card) return;
+				const item = findItem(card.dataset.imdb, card.dataset.type)
+					|| watchHistory.find(h => h.imdbId === card.dataset.imdb);
+				if (item) { closeWatchHistoryModal(); openPlayer(item); }
+			});
+
+			// Escape key
+			document.addEventListener("keydown", e => {
+				if (e.key === "Escape") { closeAccountMenu(); closeWatchHistoryModal(); closePlayer(); }
 			});
 		}
 
+		// ─── Avatar ───────────────────────────────────────────────────────────────
+		function setRandomAvatar() {
+			const seeds = ["nebula-red","cinema-night","moon-screen","pixel-pop","astro-tape","vhs-hero","starlight-user","rewind-mode"];
+			const seed  = seeds[Math.floor(Math.random() * seeds.length)];
+			refs.profileAvatar.src = `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(seed)}&radius=50&backgroundType=gradientLinear`;
+		}
+
+		// ─── Init ─────────────────────────────────────────────────────────────────
 		async function init() {
-			refs.profileAvatar.src = pickRandomAvatar();
+			setRandomAvatar();
 			loadWatchHistory();
 			renderFAQ();
 			setActiveFilterPill();
 			bindEvents();
-			await loadCatalogFromTmdb();
+			await loadCatalog();
 		}
 
 		init();
