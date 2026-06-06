@@ -4,1081 +4,1033 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Nebula Movies</title>
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" />
+	<link rel="icon" href="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 	<script src="https://cdn.tailwindcss.com"></script>
 	<style>
-		:root {
-			--bg: #020202;
-			--panel: rgba(16, 16, 16, 0.65);
-			--soft: #bdbdbd;
-			--accent: #ffffff;
-			--red: #e50914;
-		}
+		:root { --bg:#020202; --panel:rgba(16,16,16,.65); --soft:#bdbdbd; --accent:#fff; --red:#e50914; }
+		html,body { background:radial-gradient(circle at 20% 0%,#171717 0%,#090909 35%,#020202 70%); color:#fff; min-height:100%; }
+		.hide-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+		.hide-scrollbar::-webkit-scrollbar { display:none; }
+		.top-rank-number { -webkit-text-stroke:2px #fff; color:transparent; text-shadow:0 0 16px rgba(255,255,255,.15); font-size:clamp(3.5rem,6vw,6.5rem); line-height:.8; font-weight:900; letter-spacing:-.04em; }
+		.hero-vignette { background:linear-gradient(to top,rgba(2,2,2,1) 5%,rgba(2,2,2,.3) 50%,rgba(2,2,2,.75) 100%),linear-gradient(to right,rgba(2,2,2,.9) 18%,rgba(2,2,2,.2) 65%); }
+		.card-shine::after { content:""; position:absolute; inset:0; background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.18),transparent 80%); transform:translateX(-120%); transition:transform 450ms ease; pointer-events:none; }
+		.card-shine:hover::after { transform:translateX(120%); }
+		.font-display { font-family:"Sora",sans-serif; }
+		.search-result-card { background:linear-gradient(120deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); }
+		.carousel-control { width:2rem; height:2rem; border:1px solid rgba(255,255,255,.3); border-radius:999px; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,.08); transition:all 200ms ease; }
+		.carousel-control:hover { background:rgba(255,255,255,.95); color:#000; border-color:rgba(255,255,255,.95); }
+		.account-menu { position:absolute; top:calc(100% + .5rem); right:0; width:12rem; background:rgba(15,15,15,.95); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.14); border-radius:.75rem; padding:.4rem; box-shadow:0 12px 28px rgba(0,0,0,.4); }
+		.account-menu[hidden] { display:none; }
+		.faq-shell { background:radial-gradient(circle at top left,rgba(131,131,131,.16),transparent 35%),radial-gradient(circle at bottom right,rgba(255,255,255,.08),transparent 28%),rgba(8,8,8,.88); }
+		.faq-item { background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); }
+		.faq-panel { color:rgba(255,255,255,.75); }
+		.faq-icon { transition:transform 220ms ease; }
+		.faq-item[aria-expanded="true"] .faq-icon { transform:rotate(45deg); }
 
-		html,
-		body {
-			background: radial-gradient(circle at 20% 0%, #171717 0%, #090909 35%, #020202 70%);
-			color: #fff;
-			min-height: 100%;
-		}
+		/* Source badge */
+		.src-badge { position:absolute; top:6px; left:6px; z-index:10; font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:2px 7px; border-radius:99px; pointer-events:none; }
+		.src-badge-tmdb { background:rgba(1,180,228,.85); color:#fff; }
+		.src-badge-omdb { background:rgba(245,168,0,.9); color:#000; }
+		.src-badge-both { background:linear-gradient(90deg,rgba(1,180,228,.9),rgba(245,168,0,.9)); color:#fff; }
 
-		.hide-scrollbar {
-			-ms-overflow-style: none;
-			scrollbar-width: none;
-		}
+		/* Loading skeleton */
+		.skeleton { background:linear-gradient(90deg,rgba(255,255,255,.06) 25%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.06) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
+		@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-		.hide-scrollbar::-webkit-scrollbar {
-			display: none;
-		}
-
-		.top-rank-number {
-			-webkit-text-stroke: 2px #ffffff;
-			color: transparent;
-			text-shadow: 0 0 16px rgba(255, 255, 255, 0.15);
-			font-size: clamp(3.5rem, 6vw, 6.5rem);
-			line-height: 0.8;
-			font-weight: 900;
-			letter-spacing: -0.04em;
-		}
-
-		.hero-vignette {
-			background:
-				linear-gradient(to top, rgba(2, 2, 2, 1) 5%, rgba(2, 2, 2, 0.3) 50%, rgba(2, 2, 2, 0.75) 100%),
-				linear-gradient(to right, rgba(2, 2, 2, 0.9) 18%, rgba(2, 2, 2, 0.2) 65%);
-		}
-
-		.card-shine::after {
-			content: "";
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.18), transparent 80%);
-			transform: translateX(-120%);
-			transition: transform 450ms ease;
-			pointer-events: none;
-		}
-
-		.card-shine:hover::after {
-			transform: translateX(120%);
-		}
-
-		.font-display {
-			font-family: "Sora", sans-serif;
-		}
-
-		.search-result-card {
-			background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-		}
-
-		.carousel-control {
-			width: 2rem;
-			height: 2rem;
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			border-radius: 999px;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			background: rgba(255, 255, 255, 0.08);
-			transition: all 200ms ease;
-		}
-
-		.carousel-control:hover {
-			background: rgba(255, 255, 255, 0.95);
-			color: #000;
-			border-color: rgba(255, 255, 255, 0.95);
-		}
-
-		.account-menu {
-			position: absolute;
-			top: calc(100% + 0.5rem);
-			right: 0;
-			width: 12rem;
-			background: rgba(15, 15, 15, 0.95);
-			backdrop-filter: blur(8px);
-			border: 1px solid rgba(255, 255, 255, 0.14);
-			border-radius: 0.75rem;
-			padding: 0.4rem;
-			box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
-		}
-
-		.account-menu[hidden] {
-			display: none;
-		}
-
-		.faq-shell {
-			background:
-				radial-gradient(circle at top left, rgba(131, 131, 131, 0.16), transparent 35%),
-				radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.08), transparent 28%),
-				rgba(8, 8, 8, 0.88);
-		}
-
-		.faq-item {
-			background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-		}
-
-		.faq-panel {
-			color: rgba(255, 255, 255, 0.75);
-		}
-
-		.faq-icon {
-			transition: transform 220ms ease;
-		}
-
-		.faq-item[aria-expanded="true"] .faq-icon {
-			transform: rotate(45deg);
-		}
+		/* Merge status bar */
+		#mergeStatusBar { transition:opacity .4s; }
 	</style>
 </head>
 <body class="font-[Manrope] bg-[#020202] text-white selection:bg-white selection:text-black">
-	<header class="sticky top-0 z-40 border-b border-white/10 bg-black/45 backdrop-blur-xl">
-		<nav class="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 md:px-8">
-			<div class="flex items-center gap-3">
-				<div class="h-10 w-10 rounded-md border border-white/35 bg-white/15"><img src="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" alt="Nebula Movies" class="h-9 w-9 object-cover center" /></div>
-				<h1 class="font-display text-lg font-semibold tracking-[0.18em] text-white">Nebula Movies</h1>
+
+<header class="sticky top-0 z-40 border-b border-white/10 bg-black/45 backdrop-blur-xl">
+	<nav class="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 md:px-8">
+		<div class="flex items-center gap-3">
+			<div class="h-10 w-10 rounded-md border border-white/35 bg-white/15">
+				<img src="https://cdn.jsdelivr.net/gh/asemits/starlight/public/static/logo.png" alt="Nebula Movies" class="h-9 w-9 object-cover" />
 			</div>
+			<h1 class="font-display text-lg font-semibold tracking-[0.18em] text-white">Nebula Movies</h1>
+		</div>
 
-			<ul class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 md:flex" aria-label="Type sorted section links">
-				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="all">All</button></li>
-				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="movie">Movies</button></li>
-				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="tv">TV Shows</button></li>
-				<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="anime">Anime</button></li>
-			</ul>
+		<ul class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 md:flex">
+			<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="all">All</button></li>
+			<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="movie">Movies</button></li>
+			<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="tv">TV Shows</button></li>
+			<li><button class="type-filter-btn rounded-full px-4 py-1.5 text-sm transition hover:bg-white hover:text-black" data-filter="anime">Anime</button></li>
+		</ul>
 
-			<div class="flex items-center gap-3">
-				<label for="searchInput" class="group flex items-center overflow-hidden rounded-full border border-white/20 bg-white/5 px-3 py-1.5 transition focus-within:border-white/60 focus-within:bg-white/10">
-					<svg class="h-4 w-4 shrink-0 text-white/80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-					</svg>
-					<input id="searchInput" type="search" placeholder="Search titles" class="ml-2 w-32 bg-transparent text-sm text-white placeholder:text-white/55 outline-none transition-all duration-300 focus:w-56 md:w-40 md:focus:w-72" />
-				</label>
-				<button id="faqJumpBtn" class="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/85 transition hover:bg-white hover:text-black">
-					FAQ
+		<div class="flex items-center gap-3">
+			<label for="searchInput" class="group flex items-center overflow-hidden rounded-full border border-white/20 bg-white/5 px-3 py-1.5 transition focus-within:border-white/60 focus-within:bg-white/10">
+				<svg class="h-4 w-4 shrink-0 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z"/>
+				</svg>
+				<input id="searchInput" type="search" placeholder="Search titles" class="ml-2 w-32 bg-transparent text-sm text-white placeholder:text-white/55 outline-none transition-all duration-300 focus:w-56 md:w-40 md:focus:w-72"/>
+			</label>
+			<button id="faqJumpBtn" class="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/85 transition hover:bg-white hover:text-black">FAQ</button>
+			<div class="relative">
+				<button id="profileBtn" class="h-9 w-9 overflow-hidden rounded-full border border-white/30 bg-black/20" aria-label="Open account menu" aria-haspopup="true" aria-expanded="false">
+					<img id="profileAvatar" src="" alt="Profile" class="h-full w-full object-cover"/>
 				</button>
-				<div class="relative">
-					<button id="profileBtn" class="h-9 w-9 overflow-hidden rounded-full border border-white/30 bg-black/20 text-xs font-semibold" aria-label="Open account menu" aria-haspopup="true" aria-expanded="false">
-						<img id="profileAvatar" src="" alt="Profile avatar" class="h-full w-full object-cover" />
+				<div id="accountMenu" class="account-menu" hidden>
+					<button id="recentlyWatchedBtn" class="w-full rounded-lg px-3 py-2 text-left text-sm text-white/90 transition hover:bg-white hover:text-black">Recently Watched</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- Merge progress bar -->
+	<div id="mergeStatusBar" class="border-t border-white/5 bg-black/30 px-4 py-1.5 text-xs text-white/45 flex items-center gap-2">
+		<span id="mergeStatusText">Loading catalog…</span>
+		<span id="mergeSourceBadges" class="flex gap-1 ml-auto"></span>
+	</div>
+</header>
+
+<main>
+	<!-- Hero -->
+	<section id="hero" class="relative min-h-[78vh] overflow-hidden border-b border-white/10">
+		<img id="heroBackdrop" src="" alt="Featured backdrop" class="absolute inset-0 h-full w-full object-cover"/>
+		<div class="hero-vignette absolute inset-0"></div>
+		<div class="relative mx-auto flex min-h-[78vh] max-w-[1440px] items-end px-4 pb-14 pt-28 md:px-8">
+			<div class="max-w-2xl">
+				<p id="heroBadge" class="mb-4 inline-flex items-center rounded-full border border-white/35 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/85">Popular Movie</p>
+				<h2 id="heroTitle" class="font-display text-4xl font-black leading-[0.95] drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)] md:text-6xl"></h2>
+				<div id="heroMeta" class="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/85"></div>
+				<p id="heroDescription" class="mt-5 max-w-xl text-sm leading-relaxed text-white/80 md:text-base"></p>
+				<div class="mt-8 flex flex-wrap gap-3">
+					<button id="heroWatchNow" class="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-black transition hover:scale-[1.03] hover:bg-white/90">
+						<span aria-hidden="true">▶</span> Watch Now
 					</button>
-					<div id="accountMenu" class="account-menu" hidden>
-						<button id="recentlyWatchedBtn" class="w-full rounded-lg px-3 py-2 text-left text-sm text-white/90 transition hover:bg-white hover:text-black">Recently Watched</button>
-					</div>
+					<a href="#rows" class="inline-flex items-center gap-2 rounded-md border border-white/35 bg-black/35 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black">More Info</a>
 				</div>
-			</div>
-		</nav>
-	</header>
-
-	<main>
-		<section id="hero" class="relative min-h-[78vh] overflow-hidden border-b border-white/10">
-			<img id="heroBackdrop" src="" alt="Popular movie backdrop" class="absolute inset-0 h-full w-full object-cover" />
-			<div class="hero-vignette absolute inset-0"></div>
-
-			<div class="relative mx-auto flex min-h-[78vh] max-w-[1440px] items-end px-4 pb-14 pt-28 md:px-8">
-				<div class="max-w-2xl animate-[fadeIn_.6s_ease-out]">
-					<p id="heroBadge" class="mb-4 inline-flex items-center rounded-full border border-white/35 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/85">Popular Movie</p>
-					<h2 id="heroTitle" class="font-display text-4xl font-black leading-[0.95] drop-shadow-[0_8px_20px_rgba(0,0,0,0.45)] md:text-6xl"></h2>
-					<div id="heroMeta" class="mt-4 flex flex-wrap items-center gap-3 text-sm text-white/85"></div>
-					<p id="heroDescription" class="mt-5 max-w-xl text-sm leading-relaxed text-white/80 md:text-base"></p>
-
-					<div class="mt-8 flex flex-wrap gap-3">
-						<button id="heroWatchNow" class="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-black transition hover:scale-[1.03] hover:bg-white/90">
-							<span aria-hidden="true">▶</span>
-							Watch Now
-						</button>
-						<a href="#rows" class="inline-flex items-center gap-2 rounded-md border border-white/35 bg-black/35 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black">
-							More Info
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section id="searchResultsSection" class="mx-auto hidden max-w-[900px] px-4 py-10 md:px-8 md:py-12" aria-labelledby="searchResultsHeading">
-			<div class="mb-4 flex items-center justify-between">
-				<h3 id="searchResultsHeading" class="font-display text-2xl font-bold tracking-wide">Search Results</h3>
-				<p id="searchResultCount" class="text-xs uppercase tracking-[0.18em] text-white/55"></p>
-			</div>
-			<div id="searchResultsList" class="grid grid-cols-1 gap-4"></div>
-		</section>
-
-		<section id="rows" class="mx-auto max-w-[1440px] space-y-10 px-4 py-10 md:px-8 md:py-12">
-			<section aria-labelledby="recentMoviesHeading">
-				<div class="mb-4 flex items-center justify-between">
-					<h3 id="recentMoviesHeading" class="text-xl font-semibold tracking-wide">Recent Movies</h3>
-					<div class="flex items-center gap-3">
-						<span id="recentMoviesTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Fresh Picks</span>
-						<div class="flex items-center gap-2">
-							<button class="carousel-control carousel-nav-btn" data-row="recentMoviesRow" data-dir="left" aria-label="Scroll recent movies left">&#x2039;</button>
-							<button class="carousel-control carousel-nav-btn" data-row="recentMoviesRow" data-dir="right" aria-label="Scroll recent movies right">&#x203A;</button>
-						</div>
-					</div>
-				</div>
-				<div id="recentMoviesRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0" aria-label="Recent movies carousel"></div>
-			</section>
-
-			<section aria-labelledby="top10Heading">
-				<div class="mb-4 flex items-center justify-between">
-					<h3 id="top10Heading" class="text-xl font-semibold tracking-wide">Top 10 Movies</h3>
-					<div class="flex items-center gap-3">
-						<span id="top10Tag" class="text-xs uppercase tracking-[0.18em] text-white/55">Most Watched</span>
-						<div class="flex items-center gap-2">
-							<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="left" aria-label="Scroll top 10 movies left">&#x2039;</button>
-							<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="right" aria-label="Scroll top 10 movies right">&#x203A;</button>
-						</div>
-					</div>
-				</div>
-				<div id="top10Row" class="carousel-row hide-scrollbar flex gap-8 overflow-x-auto pb-4 pl-2" tabindex="0" aria-label="Top 10 movies carousel"></div>
-			</section>
-
-			<section aria-labelledby="topRatedHeading">
-				<div class="mb-4 flex items-center justify-between">
-					<h3 id="topRatedHeading" class="text-xl font-semibold tracking-wide">Top Rated</h3>
-					<div class="flex items-center gap-3">
-						<span id="topRatedTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Critic Favorites</span>
-						<div class="flex items-center gap-2">
-							<button class="carousel-control carousel-nav-btn" data-row="topRatedRow" data-dir="left" aria-label="Scroll top rated movies left">&#x2039;</button>
-							<button class="carousel-control carousel-nav-btn" data-row="topRatedRow" data-dir="right" aria-label="Scroll top rated movies right">&#x203A;</button>
-						</div>
-					</div>
-				</div>
-				<div id="topRatedRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0" aria-label="Top rated movies carousel"></div>
-			</section>
-		</section>
-
-		<section id="faqSection" class="mx-auto max-w-[1440px] px-4 pb-16 md:px-8 md:pb-24">
-			<div class="faq-shell overflow-hidden rounded-[2rem] border border-white/10 px-5 py-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] md:px-8 md:py-10">
-				<div class="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
-					<div class="space-y-5">
-						<p class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-white/70">FAQ</p>
-						<h3 class="font-display text-3xl font-black leading-tight md:text-5xl">Everything you need to know before you press play.</h3>
-						<p class="max-w-xl text-sm leading-relaxed text-white/68 md:text-base">A clean, cinematic help area for quick answers about browsing, playback, and your watched history.</p>
-						<div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm md:p-5">
-							<p class="text-sm uppercase tracking-[0.18em] text-white/45">Quick Tip</p>
-							<p class="mt-2 text-sm leading-relaxed text-white/75">Use the filter pills to switch between Movies, TV Shows, and Anime. Search instantly collapses the page into a single-column result list.</p>
-						</div>
-					</div>
-
-					<div id="faqList" class="space-y-3"></div>
-				</div>
-			</div>
-		</section>
-	</main>
-
-	<section id="playerOverlay" class="pointer-events-none fixed inset-0 z-50 bg-black/95 opacity-0 transition duration-300">
-		<div class="mx-auto flex h-full max-w-[1440px] flex-col px-4 py-4 md:px-8 md:py-6">
-			<div class="mb-4 flex items-center justify-between">
-				<div>
-					<p class="text-xs uppercase tracking-[0.2em] text-white/60">Now Playing</p>
-					<h4 id="playerTitle" class="text-xl font-semibold"></h4>
-				</div>
-				<div class="flex items-center gap-2">
-					<button id="refreshPlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Refresh</button>
-					<button id="closePlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Back to Browse</button>
-				</div>
-			</div>
-			<div class="relative h-full overflow-hidden rounded-xl border border-white/15 bg-black">
-				<iframe
-					id="vidkingIframe"
-					title="Vidking Player"
-					src="about:blank"
-					allow="autoplay; encrypted-media; picture-in-picture"
-					allowfullscreen
-					class="h-full w-full"
-				></iframe>
 			</div>
 		</div>
 	</section>
 
-	<section id="watchHistoryOverlay" class="pointer-events-none fixed inset-0 z-[60] bg-black/75 opacity-0 transition duration-300">
-		<div class="mx-auto flex h-full max-w-[980px] items-center justify-center px-4">
-			<div class="max-h-[84vh] w-full overflow-hidden rounded-2xl border border-white/20 bg-[#090909]">
-				<div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
-					<h4 class="font-display text-xl font-bold">Recently Watched</h4>
-					<button id="closeHistoryBtn" class="rounded-md border border-white/30 px-3 py-1.5 text-sm transition hover:bg-white hover:text-black">X</button>
+	<!-- Search results -->
+	<section id="searchResultsSection" class="mx-auto hidden max-w-[900px] px-4 py-10 md:px-8 md:py-12">
+		<div class="mb-4 flex items-center justify-between">
+			<h3 class="font-display text-2xl font-bold tracking-wide">Search Results</h3>
+			<p id="searchResultCount" class="text-xs uppercase tracking-[0.18em] text-white/55"></p>
+		</div>
+		<div id="searchResultsList" class="grid grid-cols-1 gap-4"></div>
+	</section>
+
+	<!-- Rows -->
+	<section id="rows" class="mx-auto max-w-[1440px] space-y-10 px-4 py-10 md:px-8 md:py-12">
+		<section>
+			<div class="mb-4 flex items-center justify-between">
+				<h3 id="recentMoviesHeading" class="text-xl font-semibold tracking-wide">Recent Movies</h3>
+				<div class="flex items-center gap-3">
+					<span id="recentMoviesTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Fresh Picks</span>
+					<div class="flex gap-2">
+						<button class="carousel-control carousel-nav-btn" data-row="recentMoviesRow" data-dir="left">&#x2039;</button>
+						<button class="carousel-control carousel-nav-btn" data-row="recentMoviesRow" data-dir="right">&#x203A;</button>
+					</div>
 				</div>
-				<div id="watchHistoryList" class="max-h-[70vh] space-y-3 overflow-y-auto p-4"></div>
+			</div>
+			<div id="recentMoviesRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0"></div>
+		</section>
+
+		<section>
+			<div class="mb-4 flex items-center justify-between">
+				<h3 id="top10Heading" class="text-xl font-semibold tracking-wide">Top 10</h3>
+				<div class="flex items-center gap-3">
+					<span id="top10Tag" class="text-xs uppercase tracking-[0.18em] text-white/55">Most Watched</span>
+					<div class="flex gap-2">
+						<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="left">&#x2039;</button>
+						<button class="carousel-control carousel-nav-btn" data-row="top10Row" data-dir="right">&#x203A;</button>
+					</div>
+				</div>
+			</div>
+			<div id="top10Row" class="carousel-row hide-scrollbar flex gap-8 overflow-x-auto pb-4 pl-2" tabindex="0"></div>
+		</section>
+
+		<section>
+			<div class="mb-4 flex items-center justify-between">
+				<h3 id="topRatedHeading" class="text-xl font-semibold tracking-wide">Top Rated</h3>
+				<div class="flex items-center gap-3">
+					<span id="topRatedTag" class="text-xs uppercase tracking-[0.18em] text-white/55">Critic Favorites</span>
+					<div class="flex gap-2">
+						<button class="carousel-control carousel-nav-btn" data-row="topRatedRow" data-dir="left">&#x2039;</button>
+						<button class="carousel-control carousel-nav-btn" data-row="topRatedRow" data-dir="right">&#x203A;</button>
+					</div>
+				</div>
+			</div>
+			<div id="topRatedRow" class="carousel-row hide-scrollbar flex gap-4 overflow-x-auto pb-2" tabindex="0"></div>
+		</section>
+	</section>
+
+	<!-- FAQ -->
+	<section id="faqSection" class="mx-auto max-w-[1440px] px-4 pb-16 md:px-8 md:pb-24">
+		<div class="faq-shell overflow-hidden rounded-[2rem] border border-white/10 px-5 py-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] md:px-8 md:py-10">
+			<div class="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+				<div class="space-y-5">
+					<p class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-white/70">FAQ</p>
+					<h3 class="font-display text-3xl font-black leading-tight md:text-5xl">Everything you need to know before you press play.</h3>
+					<p class="max-w-xl text-sm leading-relaxed text-white/68 md:text-base">Quick answers about browsing, playback, and your watch history.</p>
+					<div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm md:p-5">
+						<p class="text-sm uppercase tracking-[0.18em] text-white/45">Quick Tip</p>
+						<p class="mt-2 text-sm leading-relaxed text-white/75">Cards marked <span class="text-yellow-300 font-semibold">OMDB</span> come from the IMDb database via OMDB. Cards marked <span class="text-cyan-300 font-semibold">TMDB</span> come from The Movie Database. Duplicates are automatically merged.</p>
+					</div>
+				</div>
+				<div id="faqList" class="space-y-3"></div>
 			</div>
 		</div>
 	</section>
+</main>
 
-	<script>
-		const TMDB_API_KEY = "e55425032d3d0f371fc776f302e7c09b";
-		const TMDB_BASE_URL = "https://api.themoviedb.org/3";
-		const TMDB_POSTER_BASE = "https://image.tmdb.org/t/p/w500";
-		const TMDB_BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
-		const PLACEHOLDER_POSTER = "https://placehold.co/400x600/0a0a0a/ffffff?text=No+Poster";
-		const PLACEHOLDER_BACKDROP = "https://placehold.co/1280x720/0a0a0a/ffffff?text=No+Backdrop";
-		const HERO_CYCLE_SIZE = 6;
-		const HERO_CYCLE_INTERVAL_MS = 7000;
-		const WATCH_HISTORY_STORAGE_KEY = "nebula_recently_watched_v1";
+<!-- Player overlay -->
+<section id="playerOverlay" class="pointer-events-none fixed inset-0 z-50 bg-black/95 opacity-0 transition duration-300">
+	<div class="mx-auto flex h-full max-w-[1440px] flex-col px-4 py-4 md:px-8 md:py-6">
+		<div class="mb-4 flex items-center justify-between">
+			<div>
+				<p class="text-xs uppercase tracking-[0.2em] text-white/60">Now Playing</p>
+				<h4 id="playerTitle" class="text-xl font-semibold"></h4>
+			</div>
+			<div class="flex items-center gap-2">
+				<button id="refreshPlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Refresh</button>
+				<button id="closePlayerBtn" class="rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-black">Back to Browse</button>
+			</div>
+		</div>
+		<div class="relative h-full overflow-hidden rounded-xl border border-white/15 bg-black">
+			<iframe id="vidkingIframe" title="Player" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen class="h-full w-full"></iframe>
+		</div>
+	</div>
+</section>
 
-		const faqItems = [
-			{
-				question: "How do I watch something?",
-				answer: "Click any poster card, the hero Watch Now button, or a title from Recently Watched. The player opens with the matching TMDB ID."
-			},
-			{
-				question: "What happens when I use search?",
-				answer: "Search switches the browse area into a single elegant column of results, so you can scan titles faster without horizontal rows in the way."
-			},
-			{
-				question: "What to do if a video doesn't play or load?",
-				answer: "Refresh the movie and try again. If it still doesn't work, then switch servers from 2embed to any server, in the Top-left corner. We recommend you switch to Xps"
-			},
-			{
-				question: "What happens if it redirects it to a malware site?",
-				answer: "If you get redirected to a sketchy site, simply close the tab and return to Nebula Movies. Warning: Do not interact with the sketchy site, never."
-			},
-			{
-				question: "Does the profile menu keep track of what I watched?",
-				answer: "Yes. Every time you play something, it gets stored in Recently Watched locally in your browser, newest items first."
-			},
-			{
-				question: "Why does the featured hero keep changing?",
-				answer: "The hero section cycles through six popular movies in a loop so the page feels alive, and it resets back to the first item after the last one."
-			}
-		];
+<!-- Watch history overlay -->
+<section id="watchHistoryOverlay" class="pointer-events-none fixed inset-0 z-[60] bg-black/75 opacity-0 transition duration-300">
+	<div class="mx-auto flex h-full max-w-[980px] items-center justify-center px-4">
+		<div class="max-h-[84vh] w-full overflow-hidden rounded-2xl border border-white/20 bg-[#090909]">
+			<div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+				<h4 class="font-display text-xl font-bold">Recently Watched</h4>
+				<button id="closeHistoryBtn" class="rounded-md border border-white/30 px-3 py-1.5 text-sm transition hover:bg-white hover:text-black">✕</button>
+			</div>
+			<div id="watchHistoryList" class="max-h-[70vh] space-y-3 overflow-y-auto p-4"></div>
+		</div>
+	</div>
+</section>
 
-		let catalog = [];
-		let popularMovie = null;
-		let heroCycleMovies = [];
-		let heroCycleIndex = 0;
-		let heroCycleTimer = null;
-		let watchHistory = [];
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────────────────────────────────────
+const TMDB_KEY          = "e55425032d3d0f371fc776f302e7c09b";
+const TMDB_BASE         = "https://api.themoviedb.org/3";
+const TMDB_POSTER       = "https://image.tmdb.org/t/p/w500";
+const TMDB_BACKDROP     = "https://image.tmdb.org/t/p/original";
+const OMDB_KEY          = "ff28f90b";
+const OMDB_BASE         = "https://www.omdbapi.com";
+const PLACEHOLDER_IMG   = "https://placehold.co/400x600/0a0a0a/ffffff?text=No+Poster";
+const PLACEHOLDER_BG    = "https://placehold.co/1280x720/0a0a0a/ffffff?text=No+Backdrop";
+const HERO_CYCLE_SIZE   = 6;
+const HERO_CYCLE_MS     = 7000;
+const HISTORY_KEY       = "nebula_recently_watched_v1";
 
-		const state = {
-			searchTerm: "",
-			activeType: "all"
-		};
+// OMDB search terms we'll use to pull extra titles (spread across genres)
+const OMDB_SEARCH_TERMS = [
+	{ q:"avengers",     type:"movie" },
+	{ q:"dark knight",  type:"movie" },
+	{ q:"inception",    type:"movie" },
+	{ q:"interstellar", type:"movie" },
+	{ q:"matrix",       type:"movie" },
+	{ q:"breaking bad", type:"series" },
+	{ q:"stranger things", type:"series" },
+	{ q:"game of thrones",  type:"series" },
+	{ q:"naruto",       type:"series" },
+	{ q:"attack titan", type:"series" },
+];
 
-		const refs = {
-			heroBackdrop: document.getElementById("heroBackdrop"),
-			heroBadge: document.getElementById("heroBadge"),
-			heroTitle: document.getElementById("heroTitle"),
-			heroMeta: document.getElementById("heroMeta"),
-			heroDescription: document.getElementById("heroDescription"),
-			heroWatchNow: document.getElementById("heroWatchNow"),
-			rows: document.getElementById("rows"),
-			recentMoviesHeading: document.getElementById("recentMoviesHeading"),
-			recentMoviesTag: document.getElementById("recentMoviesTag"),
-			top10Heading: document.getElementById("top10Heading"),
-			top10Tag: document.getElementById("top10Tag"),
-			topRatedHeading: document.getElementById("topRatedHeading"),
-			topRatedTag: document.getElementById("topRatedTag"),
-			searchResultsSection: document.getElementById("searchResultsSection"),
-			searchResultsList: document.getElementById("searchResultsList"),
-			searchResultCount: document.getElementById("searchResultCount"),
-			recentMoviesRow: document.getElementById("recentMoviesRow"),
-			top10Row: document.getElementById("top10Row"),
-			topRatedRow: document.getElementById("topRatedRow"),
-			profileBtn: document.getElementById("profileBtn"),
-			profileAvatar: document.getElementById("profileAvatar"),
-			accountMenu: document.getElementById("accountMenu"),
-			recentlyWatchedBtn: document.getElementById("recentlyWatchedBtn"),
-			playerOverlay: document.getElementById("playerOverlay"),
-			vidkingIframe: document.getElementById("vidkingIframe"),
-			refreshPlayerBtn: document.getElementById("refreshPlayerBtn"),
-			closePlayerBtn: document.getElementById("closePlayerBtn"),
-			playerTitle: document.getElementById("playerTitle"),
-			searchInput: document.getElementById("searchInput"),
-			watchHistoryOverlay: document.getElementById("watchHistoryOverlay"),
-			watchHistoryList: document.getElementById("watchHistoryList"),
-			closeHistoryBtn: document.getElementById("closeHistoryBtn"),
-			faqList: document.getElementById("faqList"),
-			faqJumpBtn: document.getElementById("faqJumpBtn")
-		};
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let catalog         = [];
+let popularMovie    = null;
+let heroCycleMovies = [];
+let heroCycleIndex  = 0;
+let heroCycleTimer  = null;
+let watchHistory    = [];
+let mergeStats      = { tmdb: 0, omdb: 0, dupes: 0 };
 
-		const profileAvatarSeeds = [
-			"nebula-red",
-			"cinema-night",
-			"moon-screen",
-			"pixel-pop",
-			"astro-tape",
-			"vhs-hero",
-			"starlight-user",
-			"rewind-mode"
-		];
+const state = { searchTerm: "", activeType: "all" };
 
-		const movieGenreMap = {
-			28: "Action",
-			12: "Adventure",
-			16: "Animation",
-			35: "Comedy",
-			80: "Crime",
-			18: "Drama",
-			14: "Fantasy",
-			27: "Horror",
-			878: "Sci-Fi",
-			53: "Thriller"
-		};
+// ─────────────────────────────────────────────────────────────────────────────
+// REFS
+// ─────────────────────────────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const refs = {
+	heroBackdrop:         $("heroBackdrop"),
+	heroBadge:            $("heroBadge"),
+	heroTitle:            $("heroTitle"),
+	heroMeta:             $("heroMeta"),
+	heroDescription:      $("heroDescription"),
+	heroWatchNow:         $("heroWatchNow"),
+	rows:                 $("rows"),
+	recentMoviesHeading:  $("recentMoviesHeading"),
+	recentMoviesTag:      $("recentMoviesTag"),
+	top10Heading:         $("top10Heading"),
+	top10Tag:             $("top10Tag"),
+	topRatedHeading:      $("topRatedHeading"),
+	topRatedTag:          $("topRatedTag"),
+	searchResultsSection: $("searchResultsSection"),
+	searchResultsList:    $("searchResultsList"),
+	searchResultCount:    $("searchResultCount"),
+	recentMoviesRow:      $("recentMoviesRow"),
+	top10Row:             $("top10Row"),
+	topRatedRow:          $("topRatedRow"),
+	profileBtn:           $("profileBtn"),
+	profileAvatar:        $("profileAvatar"),
+	accountMenu:          $("accountMenu"),
+	recentlyWatchedBtn:   $("recentlyWatchedBtn"),
+	playerOverlay:        $("playerOverlay"),
+	vidkingIframe:        $("vidkingIframe"),
+	refreshPlayerBtn:     $("refreshPlayerBtn"),
+	closePlayerBtn:       $("closePlayerBtn"),
+	playerTitle:          $("playerTitle"),
+	searchInput:          $("searchInput"),
+	watchHistoryOverlay:  $("watchHistoryOverlay"),
+	watchHistoryList:     $("watchHistoryList"),
+	closeHistoryBtn:      $("closeHistoryBtn"),
+	faqList:              $("faqList"),
+	faqJumpBtn:           $("faqJumpBtn"),
+	mergeStatusText:      $("mergeStatusText"),
+	mergeSourceBadges:    $("mergeSourceBadges"),
+};
 
-		const tvGenreMap = {
-			16: "Animation",
-			18: "Drama",
-			35: "Comedy",
-			80: "Crime",
-			9648: "Mystery",
-			10759: "Action",
-			10765: "Sci-Fi"
-		};
+// ─────────────────────────────────────────────────────────────────────────────
+// FAQ
+// ─────────────────────────────────────────────────────────────────────────────
+const faqItems = [
+	{ question:"How do I watch something?", answer:"Click any poster card, the hero Watch Now button, or a title from Recently Watched. The player opens immediately." },
+	{ question:"What happens when I search?", answer:"Search collapses the page into a single result column and queries both TMDB and OMDB simultaneously." },
+	{ question:"Video won't play?", answer:"Hit Refresh inside the player. If that fails, close and reopen. We recommend switching to the Xps server via the top-left corner." },
+	{ question:"What if I get redirected to a bad site?", answer:"Close the tab and return to Nebula Movies immediately. Never interact with any unexpected site." },
+	{ question:"Where does my watch history live?", answer:"Entirely in your browser's localStorage — nothing leaves your device." },
+	{ question:"Why are there TMDB and OMDB badges on cards?", answer:"Cards from TMDB show a cyan badge; cards from OMDB's IMDb data show a yellow badge. When both sources have the same title, duplicates are merged automatically and shown once." },
+];
 
-function getPlayerUrl(item) {
-    if (item.type === "tv") {
-        const season = item.season || 1;
-        const episode = item.episode || 1;
-        return `https://www.2embed.cc/embedtv/${item.tmdbId}&s=${season}&e=${episode}`;
-    }
-    return `https://www.2embed.cc/embed/${item.tmdbId}`;
+// ─────────────────────────────────────────────────────────────────────────────
+// GENRE MAPS
+// ─────────────────────────────────────────────────────────────────────────────
+const MOVIE_GENRES = { 28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",18:"Drama",14:"Fantasy",27:"Horror",878:"Sci-Fi",53:"Thriller" };
+const TV_GENRES    = { 16:"Animation",18:"Drama",35:"Comedy",80:"Crime",9648:"Mystery",10759:"Action",10765:"Sci-Fi" };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FETCH HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+async function safeFetch(url) {
+	try {
+		const r = await fetch(url);
+		if (!r.ok) return null;
+		return await r.json();
+	} catch { return null; }
 }
 
-		function setActiveFilterPill() {
-			document.querySelectorAll(".type-filter-btn").forEach((btn) => {
-				const isActive = btn.dataset.filter === state.activeType;
-				btn.classList.toggle("bg-white", isActive);
-				btn.classList.toggle("text-black", isActive);
-			});
-		}
+async function fetchTmdb(path, params = {}) {
+	const q = new URLSearchParams({ api_key: TMDB_KEY, language: "en-US", ...params });
+	return safeFetch(`${TMDB_BASE}${path}?${q}`);
+}
 
-		async function fetchTmdb(path, params = {}) {
-			const query = new URLSearchParams({
-				api_key: TMDB_API_KEY,
-				language: "en-US",
-				...params
-			});
-			const response = await fetch(`${TMDB_BASE_URL}${path}?${query.toString()}`);
-			if (!response.ok) {
-				throw new Error(`TMDB request failed: ${path}`);
+// OMDB search: returns array of stub items {Title,Year,imdbID,Type,Poster}
+async function omdbSearch(query, type, page = 1) {
+	const omdbType = type === "series" ? "series" : type === "movie" ? "movie" : "";
+	const params = new URLSearchParams({ apikey: OMDB_KEY, s: query, page });
+	if (omdbType) params.set("type", omdbType);
+	const data = await safeFetch(`${OMDB_BASE}/?${params}`);
+	if (!data || data.Response === "False") return [];
+	return data.Search || [];
+}
+
+// OMDB detail by imdbID — enriches a stub
+async function omdbDetail(imdbID) {
+	const data = await safeFetch(`${OMDB_BASE}/?apikey=${OMDB_KEY}&i=${encodeURIComponent(imdbID)}&plot=short`);
+	if (!data || data.Response === "False") return null;
+	return data;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NORMALIZERS
+// ─────────────────────────────────────────────────────────────────────────────
+function isAnime(raw) {
+	return raw.original_language === "ja" && (raw.genre_ids || []).includes(16);
+}
+
+/**
+ * Normalize a TMDB raw item into our unified shape.
+ */
+function normalizeTmdb(raw, type, categoryOverride) {
+	const title = raw.title || raw.name || "Untitled";
+	const year  = parseInt((raw.release_date || raw.first_air_date || "0").slice(0,4)) || 0;
+	const genreMap = type === "movie" ? MOVIE_GENRES : TV_GENRES;
+	const gid   = (raw.genre_ids || []).find(id => genreMap[id]);
+	const category = categoryOverride || (type === "tv" && isAnime(raw) ? "anime" : type);
+	const genre = category === "anime" ? "Anime" : (gid ? genreMap[gid] : (type === "movie" ? "Movie" : "TV"));
+
+	return {
+		// IDs — keep both so player always has what it needs
+		tmdbId:      raw.id,
+		imdbId:      raw.imdb_id || "",        // usually blank at list level; enriched later if needed
+		// Taxonomy
+		type,
+		category,
+		title,
+		titleKey:    normKey(title, year),     // dedup key
+		// Images
+		backdropUrl: raw.backdrop_path ? `${TMDB_BACKDROP}${raw.backdrop_path}` : PLACEHOLDER_BG,
+		posterUrl:   raw.poster_path   ? `${TMDB_POSTER}${raw.poster_path}`     : PLACEHOLDER_IMG,
+		// Meta
+		rating:      parseFloat(raw.vote_average || 0),
+		releaseYear: year,
+		genre,
+		description: raw.overview || "No description available.",
+		season:      1,
+		episode:     1,
+		// Source tracking
+		sources:     ["tmdb"],
+	};
+}
+
+/**
+ * Normalize an OMDB detail object into our unified shape.
+ * OMDB type: "movie" | "series" | "episode"
+ */
+function normalizeOmdb(raw) {
+	if (!raw || raw.Response === "False") return null;
+	const title   = raw.Title || "Untitled";
+	const year    = parseInt(raw.Year) || 0;
+	const type    = raw.Type === "series" ? "tv" : "movie";
+	// Detect anime heuristically from genre string
+	const genreStr = raw.Genre || "";
+	const isAnimeEntry = genreStr.toLowerCase().includes("animation") && (raw.Country || "").toLowerCase().includes("japan");
+	const category = isAnimeEntry ? "anime" : type;
+	const genre    = genreStr.split(",")[0].trim() || (type === "movie" ? "Movie" : "TV");
+
+	// OMDB posters are direct URLs
+	const posterUrl = raw.Poster && raw.Poster !== "N/A" ? raw.Poster : PLACEHOLDER_IMG;
+
+	// OMDB doesn't supply backdrops — we'll use a placeholder; if tmdb enriches this later it gets overwritten
+	return {
+		tmdbId:      null,
+		imdbId:      raw.imdbID || "",
+		type,
+		category,
+		title,
+		titleKey:    normKey(title, year),
+		backdropUrl: PLACEHOLDER_BG,
+		posterUrl,
+		rating:      parseFloat(raw.imdbRating) || 0,
+		releaseYear: year,
+		genre,
+		description: raw.Plot && raw.Plot !== "N/A" ? raw.Plot : "No description available.",
+		season:      1,
+		episode:     1,
+		sources:     ["omdb"],
+	};
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEDUP KEY  — normalised title + year, strips punctuation
+// ─────────────────────────────────────────────────────────────────────────────
+function normKey(title, year) {
+	const t = String(title).toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+	return `${t}::${year || 0}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MERGE — combine two item arrays, resolve duplicates by titleKey
+// Merge strategy: TMDB wins for images/backdropUrl; OMDB enriches imdbId,
+// rating (take higher), description (prefer longer), and marks source "both".
+// ─────────────────────────────────────────────────────────────────────────────
+function mergeCollections(tmdbItems, omdbItems) {
+	const map = new Map();
+
+	// Insert TMDB first
+	for (const item of tmdbItems) {
+		map.set(item.titleKey, { ...item });
+	}
+
+	// Merge OMDB on top
+	let dupes = 0;
+	for (const item of omdbItems) {
+		if (map.has(item.titleKey)) {
+			dupes++;
+			const existing = map.get(item.titleKey);
+			// Enrich missing fields from OMDB
+			if (!existing.imdbId && item.imdbId) existing.imdbId = item.imdbId;
+			if (item.rating > existing.rating) existing.rating = item.rating;
+			if (item.description.length > existing.description.length && existing.description === "No description available.") {
+				existing.description = item.description;
 			}
-			return response.json();
-		}
-
-		function isAnimeEntry(rawItem) {
-			const genres = rawItem.genre_ids || [];
-			return rawItem.original_language === "ja" && genres.includes(16);
-		}
-
-		function toDisplayGenre(rawItem, type, forcedGenreLabel = "") {
-			if (forcedGenreLabel) {
-				return forcedGenreLabel;
+			// Prefer OMDB poster only if TMDB had none
+			if (existing.posterUrl === PLACEHOLDER_IMG && item.posterUrl !== PLACEHOLDER_IMG) {
+				existing.posterUrl = item.posterUrl;
 			}
-			const genreIds = rawItem.genre_ids || [];
-			const map = type === "movie" ? movieGenreMap : tvGenreMap;
-			const match = genreIds.find((id) => map[id]);
-			if (!match && type === "tv" && isAnimeEntry(rawItem)) {
-				return "Anime";
-			}
-			return match ? map[match] : (type === "movie" ? "Movie" : "TV");
+			existing.sources = ["both"];
+			map.set(item.titleKey, existing);
+		} else {
+			map.set(item.titleKey, { ...item });
 		}
+	}
 
-		function normalizeItem(rawItem, type, categoryOverride = "") {
-			const title = rawItem.title || rawItem.name || "Untitled";
-			const releaseDate = rawItem.release_date || rawItem.first_air_date || "";
-			const year = releaseDate ? Number(releaseDate.slice(0, 4)) : new Date().getFullYear();
-			const category = categoryOverride || (type === "tv" && isAnimeEntry(rawItem) ? "anime" : type);
-			return {
-				tmdbId: rawItem.id,
-				type,
-				category,
-				title,
-				backdropUrl: rawItem.backdrop_path ? `${TMDB_BACKDROP_BASE}${rawItem.backdrop_path}` : PLACEHOLDER_BACKDROP,
-				posterUrl: rawItem.poster_path ? `${TMDB_POSTER_BASE}${rawItem.poster_path}` : PLACEHOLDER_POSTER,
-				rating: Number(rawItem.vote_average || 0),
-				releaseYear: year,
-				genre: toDisplayGenre(rawItem, type, category === "anime" ? "Anime" : ""),
-				description: rawItem.overview || "No description available.",
-				season: 1,
-				episode: 1
-			};
+	mergeStats.dupes = dupes;
+	return Array.from(map.values());
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PLAYER URL — prefers imdbId for OMDB-sourced items, tmdbId otherwise
+// ─────────────────────────────────────────────────────────────────────────────
+function getPlayerUrl(item) {
+	const id = item.imdbId || item.tmdbId;
+	if (item.type === "tv") {
+		const s = item.season   || 1;
+		const e = item.episode  || 1;
+		return `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}`;
+	}
+	return `https://www.2embed.cc/embed/${id}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATUS BAR
+// ─────────────────────────────────────────────────────────────────────────────
+function setStatus(text) {
+	if (refs.mergeStatusText) refs.mergeStatusText.textContent = text;
+}
+
+function renderSourceBadges() {
+	if (!refs.mergeSourceBadges) return;
+	refs.mergeSourceBadges.innerHTML = `
+		<span class="src-badge src-badge-tmdb">TMDB ${mergeStats.tmdb}</span>
+		<span class="src-badge src-badge-omdb">OMDB ${mergeStats.omdb}</span>
+		<span class="rounded-full bg-white/10 text-white/40 px-2 py-0.5 text-[9px] uppercase tracking-widest">${mergeStats.dupes} merged</span>
+	`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LOAD CATALOG
+// ─────────────────────────────────────────────────────────────────────────────
+async function loadCatalog() {
+	renderLoadingState();
+	setStatus("Fetching TMDB catalog…");
+
+	// ── 1. TMDB ──────────────────────────────────────────────────────────────
+	const [popMovies, nowPlaying, topRated, popTv, anime] = await Promise.all([
+		fetchTmdb("/movie/popular",  { page:1 }),
+		fetchTmdb("/movie/now_playing", { page:1 }),
+		fetchTmdb("/movie/top_rated",   { page:1 }),
+		fetchTmdb("/tv/popular",        { page:1 }),
+		fetchTmdb("/discover/tv", { with_genres:"16", with_original_language:"ja", sort_by:"popularity.desc", page:1 }),
+	]);
+
+	const tmdbMovies = [
+		...(popMovies?.results  || []).map(r => normalizeTmdb(r,"movie")),
+		...(nowPlaying?.results || []).map(r => normalizeTmdb(r,"movie")),
+		...(topRated?.results   || []).map(r => normalizeTmdb(r,"movie")),
+	];
+	const tmdbTv = [
+		...(popTv?.results || []).map(r => normalizeTmdb(r,"tv", isAnime(r) ? "anime" : "tv")),
+		...(anime?.results || []).map(r => normalizeTmdb(r,"tv","anime")),
+	];
+
+	const tmdbAll = dedupeByKey([...tmdbMovies, ...tmdbTv]);
+	mergeStats.tmdb = tmdbAll.length;
+	setStatus(`TMDB: ${mergeStats.tmdb} titles. Fetching OMDB…`);
+
+	// ── 2. OMDB — parallel search across terms ────────────────────────────────
+	const omdbStubs = await Promise.all(
+		OMDB_SEARCH_TERMS.map(({ q, type }) => omdbSearch(q, type))
+	);
+	const allStubs = omdbStubs.flat();
+
+	// Dedupe stubs by imdbID before detail fetching
+	const uniqueStubs = [];
+	const seenImdb = new Set();
+	for (const s of allStubs) {
+		if (s.imdbID && !seenImdb.has(s.imdbID)) {
+			seenImdb.add(s.imdbID);
+			uniqueStubs.push(s);
 		}
+	}
 
-		function dedupeByIdAndType(items) {
-			const map = new Map();
-			items.forEach((item) => {
-				map.set(`${item.type}-${item.tmdbId}`, item);
-			});
-			return Array.from(map.values());
+	setStatus(`OMDB: ${uniqueStubs.length} stubs found. Fetching details…`);
+
+	// Fetch details in batches of 8 to avoid hammering the API
+	const omdbDetailed = [];
+	const BATCH = 8;
+	for (let i = 0; i < uniqueStubs.length; i += BATCH) {
+		const batch = uniqueStubs.slice(i, i + BATCH);
+		const results = await Promise.all(batch.map(s => omdbDetail(s.imdbID)));
+		for (const r of results) {
+			const norm = normalizeOmdb(r);
+			if (norm) omdbDetailed.push(norm);
 		}
+	}
 
-		function pickRandomAvatar() {
-			const randomSeed = profileAvatarSeeds[Math.floor(Math.random() * profileAvatarSeeds.length)];
-			return `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(randomSeed)}&radius=50&backgroundType=gradientLinear`;
+	mergeStats.omdb = omdbDetailed.length;
+	setStatus(`Merging ${mergeStats.tmdb} TMDB + ${mergeStats.omdb} OMDB titles…`);
+
+	// ── 3. Merge ──────────────────────────────────────────────────────────────
+	catalog = mergeCollections(tmdbAll, omdbDetailed);
+
+	// Hero cycle — only movies with a real backdrop
+	heroCycleMovies = catalog
+		.filter(i => i.type === "movie" && i.backdropUrl !== PLACEHOLDER_BG)
+		.slice(0, HERO_CYCLE_SIZE);
+	heroCycleIndex = 0;
+	popularMovie   = heroCycleMovies[0] || catalog.find(i => i.type === "movie") || catalog[0] || null;
+
+	setStatus(`Ready — ${catalog.length} titles (${mergeStats.dupes} duplicates merged)`);
+	renderSourceBadges();
+	renderHero();
+	renderMovies();
+	startHeroCycle();
+
+	// Fade status bar after a few seconds
+	setTimeout(() => {
+		const bar = $("mergeStatusBar");
+		if (bar) bar.style.opacity = "0.35";
+	}, 5000);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEDUP HELPER (by titleKey)
+// ─────────────────────────────────────────────────────────────────────────────
+function dedupeByKey(items) {
+	const map = new Map();
+	for (const item of items) {
+		if (!map.has(item.titleKey)) map.set(item.titleKey, item);
+	}
+	return Array.from(map.values());
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HERO
+// ─────────────────────────────────────────────────────────────────────────────
+function renderHero() {
+	const item = popularMovie;
+	if (!item) {
+		refs.heroTitle.textContent = "No featured title";
+		refs.heroDescription.textContent = "Content loading…";
+		refs.heroMeta.innerHTML = "";
+		return;
+	}
+	const badge = { movie:"Popular Movie", tv:"Popular TV Show", anime:"Popular Anime" };
+	refs.heroBackdrop.src            = item.backdropUrl;
+	refs.heroBadge.textContent       = badge[item.category] || "Popular";
+	refs.heroTitle.textContent       = item.title;
+	refs.heroDescription.textContent = item.description;
+	refs.heroMeta.innerHTML = [
+		item.rating      ? `<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">⭐ ${item.rating.toFixed(1)}</span>` : "",
+		item.releaseYear ? `<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${item.releaseYear}</span>` : "",
+		item.genre       ? `<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${item.genre}</span>` : "",
+		sourcePill(item),
+	].join("");
+}
+
+function sourcePill(item) {
+	if (!item.sources) return "";
+	const s = item.sources[0];
+	const cls = s === "both" ? "src-badge-both" : s === "omdb" ? "src-badge-omdb" : "src-badge-tmdb";
+	const lbl = s === "both" ? "TMDB+OMDB" : s.toUpperCase();
+	return `<span class="src-badge ${cls}" style="position:static;display:inline-block;">${lbl}</span>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+function badgeHtml(item) {
+	if (!item.sources) return "";
+	const s = item.sources[0];
+	const cls = s === "both" ? "src-badge-both" : s === "omdb" ? "src-badge-omdb" : "src-badge-tmdb";
+	const lbl = s === "both" ? "★" : s.toUpperCase();
+	return `<span class="src-badge ${cls}">${lbl}</span>`;
+}
+
+function createStandardCard(item) {
+	return `
+		<article class="card-shine group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 hover:shadow-[0_16px_35px_rgba(0,0,0,0.45)] md:w-[180px]">
+			<button class="movie-card w-full text-left" data-key="${escAttr(item.titleKey)}" aria-label="Play ${escAttr(item.title)}">
+				<div class="relative aspect-[2/3] overflow-hidden">
+					${badgeHtml(item)}
+					<img src="${escAttr(item.posterUrl)}" alt="${escAttr(item.title)} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='${PLACEHOLDER_IMG}'"/>
+					<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent"></div>
+				</div>
+				<div class="space-y-1 px-3 py-2">
+					<h4 class="line-clamp-1 text-sm font-semibold">${escHtml(item.title)}</h4>
+					<p class="text-xs text-white/65">${item.releaseYear}${item.genre ? " • " + escHtml(item.genre) : ""}</p>
+				</div>
+			</button>
+		</article>`;
+}
+
+function createTop10Card(item, rank) {
+	return `
+		<article class="group relative flex w-[200px] flex-shrink-0 snap-start items-end md:w-[230px]">
+			<span class="top-rank-number absolute -left-2 bottom-2 z-10">${rank}</span>
+			<button class="movie-card card-shine relative ml-10 w-full overflow-hidden rounded-lg border border-white/15 bg-white/5 text-left transition duration-300 hover:scale-[1.04] hover:border-white/40" data-key="${escAttr(item.titleKey)}" aria-label="Play ${escAttr(item.title)}">
+				<div class="relative aspect-[2/3] overflow-hidden">
+					${badgeHtml(item)}
+					<img src="${escAttr(item.posterUrl)}" alt="${escAttr(item.title)}" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='${PLACEHOLDER_IMG}'"/>
+				</div>
+			</button>
+		</article>`;
+}
+
+function createTopRatedCard(item) {
+	return `
+		<article class="group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 md:w-[180px]">
+			<button class="movie-card w-full text-left" data-key="${escAttr(item.titleKey)}" aria-label="Play ${escAttr(item.title)}">
+				<div class="relative aspect-[2/3] overflow-hidden">
+					${badgeHtml(item)}
+					<img src="${escAttr(item.posterUrl)}" alt="${escAttr(item.title)}" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" onerror="this.src='${PLACEHOLDER_IMG}'"/>
+					<div class="absolute right-2 top-2 translate-y-1 rounded-full border border-white/35 bg-black/70 px-2 py-1 text-xs font-semibold opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">★ ${item.rating.toFixed(1)}</div>
+				</div>
+				<div class="space-y-1 px-3 py-2">
+					<h4 class="line-clamp-1 text-sm font-semibold">${escHtml(item.title)}</h4>
+					<p class="text-xs text-white/65">${item.releaseYear}</p>
+				</div>
+			</button>
+		</article>`;
+}
+
+function createSearchResultCard(item) {
+	return `
+		<article class="search-result-card overflow-hidden rounded-xl border border-white/20 p-3 transition duration-300 hover:border-white/45 hover:bg-white/10">
+			<button class="movie-card flex w-full items-center gap-4 text-left" data-key="${escAttr(item.titleKey)}" aria-label="Play ${escAttr(item.title)}">
+				<img src="${escAttr(item.posterUrl)}" alt="${escAttr(item.title)}" class="h-24 w-16 flex-shrink-0 rounded-md object-cover md:h-28 md:w-20" loading="lazy" onerror="this.src='${PLACEHOLDER_IMG}'"/>
+				<div class="min-w-0">
+					<h4 class="font-display truncate text-lg font-bold">${escHtml(item.title)}</h4>
+					<p class="mt-1 flex flex-wrap items-center gap-2 text-sm text-white/70">
+						${item.releaseYear ? `<span>${item.releaseYear}</span>` : ""}
+						${item.genre ? `<span>• ${escHtml(item.genre)}</span>` : ""}
+						${item.rating ? `<span>• ★ ${item.rating.toFixed(1)}</span>` : ""}
+						${sourcePill(item)}
+					</p>
+					<p class="mt-2 line-clamp-2 text-sm text-white/60">${escHtml(item.description)}</p>
+				</div>
+			</button>
+		</article>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER ROWS
+// ─────────────────────────────────────────────────────────────────────────────
+function getFiltered() {
+	const term = state.searchTerm.toLowerCase();
+	return catalog.filter(item => {
+		const matchSearch = item.title.toLowerCase().includes(term);
+		const matchType   = state.activeType === "all" || item.category === state.activeType;
+		return matchSearch && matchType;
+	});
+}
+
+function renderLoadingState() {
+	const skel = Array(8).fill(`<div class="skeleton w-[150px] md:w-[180px] flex-shrink-0 aspect-[2/3] rounded-lg"></div>`).join("");
+	refs.recentMoviesRow.innerHTML = skel;
+	refs.top10Row.innerHTML        = skel;
+	refs.topRatedRow.innerHTML     = skel;
+}
+
+function emptyState(msg) {
+	return `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">${msg}</p>`;
+}
+
+function renderMovies() {
+	updateSectionLabels();
+	const filtered   = getFiltered();
+	const isSearching = state.searchTerm.length > 0;
+
+	if (isSearching) {
+		refs.rows.classList.add("hidden");
+		refs.searchResultsSection.classList.remove("hidden");
+		refs.searchResultCount.textContent = `${filtered.length} Match${filtered.length === 1 ? "" : "es"}`;
+		refs.searchResultsList.innerHTML = filtered.length
+			? filtered.map(createSearchResultCard).join("")
+			: emptyState("No titles match your search.");
+		return;
+	}
+
+	refs.rows.classList.remove("hidden");
+	refs.searchResultsSection.classList.add("hidden");
+
+	const recent   = [...filtered].sort((a,b) => b.releaseYear - a.releaseYear).slice(0,12);
+	const top10    = [...filtered].sort((a,b) => b.rating - a.rating).slice(0,10);
+	const topRated = [...filtered].filter(i => i.rating >= 7.5).sort((a,b) => b.rating - a.rating).slice(0,12);
+
+	refs.recentMoviesRow.innerHTML = recent.length   ? recent.map(createStandardCard).join("")                    : emptyState("No recent titles.");
+	refs.top10Row.innerHTML        = top10.length    ? top10.map((i,idx) => createTop10Card(i,idx+1)).join("")    : emptyState("Top 10 empty.");
+	refs.topRatedRow.innerHTML     = topRated.length ? topRated.map(createTopRatedCard).join("")                  : emptyState("No top-rated titles.");
+
+	enhanceCarousels();
+}
+
+function updateSectionLabels() {
+	const map = {
+		all:   { recent:"Recent Movies",    top10:"Top 10",             topRated:"Top Rated",          recentTag:"Fresh Picks", top10Tag:"Most Watched", topRatedTag:"Critic Favorites" },
+		movie: { recent:"Recent Movies",    top10:"Top 10 Movies",      topRated:"Top Rated Movies",   recentTag:"Fresh Picks", top10Tag:"Most Watched", topRatedTag:"Critic Favorites" },
+		tv:    { recent:"Recent TV Shows",  top10:"Top 10 TV Shows",    topRated:"Top Rated TV Shows", recentTag:"New Episodes",top10Tag:"Trending",    topRatedTag:"Viewer Favorites" },
+		anime: { recent:"Recent Anime",     top10:"Top 10 Anime",       topRated:"Top Rated Anime",    recentTag:"Latest Arcs", top10Tag:"Most Watched", topRatedTag:"Community Picks"  },
+	};
+	const L = map[state.activeType] || map.all;
+	refs.recentMoviesHeading.textContent = L.recent;
+	refs.top10Heading.textContent        = L.top10;
+	refs.topRatedHeading.textContent     = L.topRated;
+	refs.recentMoviesTag.textContent     = L.recentTag;
+	refs.top10Tag.textContent            = L.top10Tag;
+	refs.topRatedTag.textContent         = L.topRatedTag;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HERO CYCLE
+// ─────────────────────────────────────────────────────────────────────────────
+function startHeroCycle() {
+	stopHeroCycle();
+	if (heroCycleMovies.length < 2) return;
+	heroCycleTimer = setInterval(() => {
+		heroCycleIndex = (heroCycleIndex + 1) % heroCycleMovies.length;
+		popularMovie   = heroCycleMovies[heroCycleIndex];
+		renderHero();
+	}, HERO_CYCLE_MS);
+}
+function stopHeroCycle() {
+	if (heroCycleTimer) { clearInterval(heroCycleTimer); heroCycleTimer = null; }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PLAYER
+// ─────────────────────────────────────────────────────────────────────────────
+function openPlayer(item) {
+	addToWatchHistory(item);
+	const url = getPlayerUrl(item);
+	refs.vidkingIframe.dataset.src = url;
+	refs.vidkingIframe.src         = url;
+	refs.playerTitle.textContent   = item.title;
+	refs.playerOverlay.classList.remove("pointer-events-none","opacity-0");
+	document.body.classList.add("overflow-hidden");
+}
+function refreshPlayer() {
+	const src = refs.vidkingIframe.dataset.src || refs.vidkingIframe.src;
+	if (!src || src === "about:blank") return;
+	refs.vidkingIframe.src = "about:blank";
+	setTimeout(() => { refs.vidkingIframe.src = src; }, 80);
+}
+function closePlayer() {
+	refs.playerOverlay.classList.add("pointer-events-none","opacity-0");
+	refs.vidkingIframe.src = "about:blank";
+	document.body.classList.remove("overflow-hidden");
+}
+
+function findByKey(key) {
+	return catalog.find(i => i.titleKey === key);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WATCH HISTORY
+// ─────────────────────────────────────────────────────────────────────────────
+function loadWatchHistory() {
+	try { watchHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); if (!Array.isArray(watchHistory)) watchHistory = []; }
+	catch { watchHistory = []; }
+}
+function saveWatchHistory() { localStorage.setItem(HISTORY_KEY, JSON.stringify(watchHistory)); }
+function addToWatchHistory(item) {
+	watchHistory = watchHistory.filter(e => e.titleKey !== item.titleKey);
+	watchHistory.unshift({ ...item, watchedAt: Date.now() });
+	watchHistory = watchHistory.slice(0, 40);
+	saveWatchHistory();
+}
+function renderWatchHistory() {
+	if (!watchHistory.length) {
+		refs.watchHistoryList.innerHTML = emptyState("No watch activity yet.");
+		return;
+	}
+	refs.watchHistoryList.innerHTML = watchHistory.map(item => `
+		<article class="rounded-xl border border-white/15 bg-white/5 p-3 transition hover:border-white/35">
+			<button class="history-item-btn flex w-full items-center gap-4 text-left" data-key="${escAttr(item.titleKey)}">
+				<img src="${escAttr(item.posterUrl)}" class="h-20 w-14 flex-shrink-0 rounded-md object-cover" loading="lazy" onerror="this.src='${PLACEHOLDER_IMG}'"/>
+				<div class="min-w-0">
+					<p class="font-display truncate text-base font-bold">${escHtml(item.title)}</p>
+					<p class="mt-0.5 text-sm text-white/70">${item.releaseYear}${item.genre ? " • " + escHtml(item.genre) : ""}${item.rating ? " • ★ " + Number(item.rating).toFixed(1) : ""}</p>
+					<p class="mt-1 text-xs uppercase tracking-[0.12em] text-white/45">Tap to Play Again</p>
+				</div>
+			</button>
+		</article>
+	`).join("");
+}
+function openWatchHistoryModal()  { renderWatchHistory(); refs.watchHistoryOverlay.classList.remove("pointer-events-none","opacity-0"); document.body.classList.add("overflow-hidden"); }
+function closeWatchHistoryModal() { refs.watchHistoryOverlay.classList.add("pointer-events-none","opacity-0"); document.body.classList.remove("overflow-hidden"); }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ACCOUNT MENU
+// ─────────────────────────────────────────────────────────────────────────────
+function toggleAccountMenu() { const o = refs.accountMenu.hidden; refs.accountMenu.hidden = !o; refs.profileBtn.setAttribute("aria-expanded", String(o)); }
+function closeAccountMenu()  { refs.accountMenu.hidden = true; refs.profileBtn.setAttribute("aria-expanded","false"); }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FILTER PILLS
+// ─────────────────────────────────────────────────────────────────────────────
+function setActiveFilterPill() {
+	document.querySelectorAll(".type-filter-btn").forEach(btn => {
+		const on = btn.dataset.filter === state.activeType;
+		btn.classList.toggle("bg-white", on);
+		btn.classList.toggle("text-black", on);
+	});
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CAROUSELS
+// ─────────────────────────────────────────────────────────────────────────────
+function enhanceCarousels() {
+	document.querySelectorAll(".carousel-row").forEach(r => r.classList.add("snap-x","snap-mandatory","scroll-smooth"));
+}
+function scrollCarousel(id, dir) {
+	const row = $(id);
+	if (row) row.scrollBy({ left: dir === "left" ? -360 : 360, behavior:"smooth" });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FAQ
+// ─────────────────────────────────────────────────────────────────────────────
+function renderFAQ() {
+	refs.faqList.innerHTML = faqItems.map((item, i) => `
+		<article class="faq-item overflow-hidden rounded-2xl border border-white/10" aria-expanded="${i===0}">
+			<button class="faq-toggle flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6" aria-expanded="${i===0}">
+				<span class="font-display text-base font-bold md:text-lg">${item.question}</span>
+				<span class="faq-icon inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg">+</span>
+			</button>
+			<div class="faq-panel px-5 pb-5 ${i===0?"block":"hidden"} md:px-6">
+				<p class="max-w-3xl text-sm leading-relaxed md:text-base">${item.answer}</p>
+			</div>
+		</article>
+	`).join("");
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ESCAPE HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+function escHtml(v) { return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function escAttr(v) { return escHtml(v).replace(/"/g,"&quot;"); }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EVENT BINDING
+// ─────────────────────────────────────────────────────────────────────────────
+function bindEvents() {
+	refs.faqJumpBtn.addEventListener("click", () => $("faqSection").scrollIntoView({ behavior:"smooth" }));
+
+	refs.faqList.addEventListener("click", e => {
+		const toggle = e.target.closest(".faq-toggle");
+		if (!toggle) return;
+		const item    = toggle.closest(".faq-item");
+		const panel   = item.querySelector(".faq-panel");
+		const expanded = toggle.getAttribute("aria-expanded") === "true";
+		refs.faqList.querySelectorAll(".faq-item").forEach(fi => {
+			fi.setAttribute("aria-expanded","false");
+			fi.querySelector(".faq-toggle").setAttribute("aria-expanded","false");
+			fi.querySelector(".faq-panel").classList.replace("block","hidden");
+		});
+		if (!expanded) {
+			item.setAttribute("aria-expanded","true");
+			toggle.setAttribute("aria-expanded","true");
+			panel.classList.replace("hidden","block");
 		}
-
-		function loadWatchHistory() {
-			try {
-				const raw = localStorage.getItem(WATCH_HISTORY_STORAGE_KEY);
-				watchHistory = raw ? JSON.parse(raw) : [];
-				if (!Array.isArray(watchHistory)) {
-					watchHistory = [];
-				}
-			} catch {
-				watchHistory = [];
-			}
-		}
-
-		function saveWatchHistory() {
-			localStorage.setItem(WATCH_HISTORY_STORAGE_KEY, JSON.stringify(watchHistory));
-		}
-
-		function addToWatchHistory(item) {
-			watchHistory = watchHistory.filter((entry) => !(entry.tmdbId === item.tmdbId && entry.type === item.type));
-			watchHistory.unshift({
-				tmdbId: item.tmdbId,
-				type: item.type,
-				category: item.category,
-				title: item.title,
-				posterUrl: item.posterUrl,
-				releaseYear: item.releaseYear,
-				genre: item.genre,
-				rating: item.rating,
-				watchedAt: Date.now()
-			});
-			watchHistory = watchHistory.slice(0, 40);
-			saveWatchHistory();
-		}
-
-		function renderWatchHistory() {
-			if (!watchHistory.length) {
-				renderEmptyState(refs.watchHistoryList, "No watch activity yet. Play something to see it here.");
-				return;
-			}
-
-			refs.watchHistoryList.innerHTML = watchHistory.map((item) => {
-				return `
-					<article class="rounded-xl border border-white/15 bg-white/5 p-3 transition hover:border-white/35">
-						<button class="history-item-btn flex w-full items-center gap-4 text-left" data-id="${item.tmdbId}" data-type="${item.type}">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-20 w-14 flex-shrink-0 rounded-md object-cover" loading="lazy" />
-							<div class="min-w-0">
-								<p class="font-display truncate text-base font-bold">${item.title}</p>
-								<p class="mt-0.5 text-sm text-white/70">${item.releaseYear} • ${item.genre} • ★ ${Number(item.rating).toFixed(1)}</p>
-								<p class="mt-1 text-xs uppercase tracking-[0.12em] text-white/45">Tap to Play Again</p>
-							</div>
-						</button>
-					</article>
-				`;
-			}).join("");
-		}
-
-		function openWatchHistoryModal() {
-			renderWatchHistory();
-			refs.watchHistoryOverlay.classList.remove("pointer-events-none", "opacity-0");
-			document.body.classList.add("overflow-hidden");
-		}
-
-		function closeWatchHistoryModal() {
-			refs.watchHistoryOverlay.classList.add("pointer-events-none", "opacity-0");
-			document.body.classList.remove("overflow-hidden");
-		}
-
-		function closeAccountMenu() {
-			refs.accountMenu.hidden = true;
-			refs.profileBtn.setAttribute("aria-expanded", "false");
-		}
-
-		function toggleAccountMenu() {
-			const willOpen = refs.accountMenu.hidden;
-			refs.accountMenu.hidden = !willOpen;
-			refs.profileBtn.setAttribute("aria-expanded", String(willOpen));
-		}
-
-		function stopHeroCycle() {
-			if (heroCycleTimer) {
-				clearInterval(heroCycleTimer);
-				heroCycleTimer = null;
-			}
-		}
-
-		function startHeroCycle() {
-			stopHeroCycle();
-			if (heroCycleMovies.length < 2) {
-				return;
-			}
-			heroCycleTimer = setInterval(() => {
-				heroCycleIndex = (heroCycleIndex + 1) % heroCycleMovies.length;
-				popularMovie = heroCycleMovies[heroCycleIndex];
-				renderHero();
-			}, HERO_CYCLE_INTERVAL_MS);
-		}
-
-		function scrollCarousel(rowId, direction) {
-			const row = document.getElementById(rowId);
-			if (!row) {
-				return;
-			}
-			const amount = direction === "left" ? -360 : 360;
-			row.scrollBy({ left: amount, behavior: "smooth" });
-		}
-
-		async function loadCatalogFromTmdb() {
-			renderLoadingState();
-			try {
-				const [popularMovies, recentMovies, topRatedMovies, popularTv, animeSeries] = await Promise.all([
-					fetchTmdb("/movie/popular", { page: "1" }),
-					fetchTmdb("/movie/now_playing", { page: "1" }),
-					fetchTmdb("/movie/top_rated", { page: "1" }),
-					fetchTmdb("/tv/popular", { page: "1" }),
-					fetchTmdb("/discover/tv", { with_genres: "16", with_original_language: "ja", sort_by: "popularity.desc", page: "1" })
-				]);
-
-				const moviePopularItems = (popularMovies.results || []).map((item) => normalizeItem(item, "movie"));
-				const movieRecentItems = (recentMovies.results || []).map((item) => normalizeItem(item, "movie"));
-				const movieTopRatedItems = (topRatedMovies.results || []).map((item) => normalizeItem(item, "movie"));
-				const tvItems = (popularTv.results || []).map((item) => normalizeItem(item, "tv", isAnimeEntry(item) ? "anime" : "tv"));
-				const animeItems = (animeSeries.results || []).map((item) => normalizeItem(item, "tv", "anime"));
-
-				catalog = dedupeByIdAndType([
-					...moviePopularItems,
-					...movieRecentItems,
-					...movieTopRatedItems,
-					...tvItems,
-					...animeItems
-				]);
-
-				popularMovie = moviePopularItems[0] || catalog.find((item) => item.type === "movie") || catalog[0] || null;
-				heroCycleMovies = dedupeByIdAndType([
-					...moviePopularItems,
-					...movieRecentItems,
-					...movieTopRatedItems
-				]).filter((item) => item.type === "movie").slice(0, HERO_CYCLE_SIZE);
-				heroCycleIndex = 0;
-				if (heroCycleMovies.length) {
-					popularMovie = heroCycleMovies[0];
-				}
-				renderHero();
-				renderMovies();
-				startHeroCycle();
-			} catch (error) {
-				refs.heroTitle.textContent = "Unable to load TMDB data";
-				refs.heroDescription.textContent = "Check your API key, TMDB request quota, or network connection and refresh.";
-				refs.heroMeta.innerHTML = "";
-				renderEmptyState(refs.recentMoviesRow, "TMDB fetch failed. Please verify the API key and reload.");
-				renderEmptyState(refs.top10Row, "TMDB fetch failed. Please verify the API key and reload.");
-				renderEmptyState(refs.topRatedRow, "TMDB fetch failed. Please verify the API key and reload.");
-				stopHeroCycle();
-				console.error(error);
-			}
-		}
-
-		function renderLoadingState() {
-			renderEmptyState(refs.recentMoviesRow, "Loading movies from TMDB...");
-			renderEmptyState(refs.top10Row, "Loading movies from TMDB...");
-			renderEmptyState(refs.topRatedRow, "Loading movies from TMDB...");
-		}
-
-		function createStandardCard(item) {
-			return `
-				<article class="card-shine group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 hover:shadow-[0_16px_35px_rgba(0,0,0,0.45)] md:w-[180px]">
-					<button class="movie-card w-full text-left" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<div class="relative aspect-[2/3] overflow-hidden">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
-							<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent"></div>
-						</div>
-						<div class="space-y-1 px-3 py-2">
-							<h4 class="line-clamp-1 text-sm font-semibold">${item.title}</h4>
-							<p class="text-xs text-white/65">${item.releaseYear} • ${item.genre}</p>
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function createTop10Card(item, rank) {
-			return `
-				<article class="group relative flex w-[200px] flex-shrink-0 snap-start items-end md:w-[230px]">
-					<span class="top-rank-number absolute -left-2 bottom-2 z-10">${rank}</span>
-					<button class="movie-card card-shine relative ml-10 w-full overflow-hidden rounded-lg border border-white/15 bg-white/5 text-left transition duration-300 hover:scale-[1.04] hover:border-white/40" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<div class="relative aspect-[2/3] overflow-hidden">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function createTopRatedCard(item) {
-			return `
-				<article class="group relative w-[150px] flex-shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-white/5 transition duration-300 hover:scale-[1.05] hover:border-white/40 md:w-[180px]">
-					<button class="movie-card w-full text-left" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<div class="relative aspect-[2/3] overflow-hidden">
-							<img src="${item.posterUrl}" alt="${item.title} poster" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" />
-							<div class="absolute right-2 top-2 translate-y-1 rounded-full border border-white/35 bg-black/70 px-2 py-1 text-xs font-semibold opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">★ ${item.rating.toFixed(1)}</div>
-						</div>
-						<div class="space-y-1 px-3 py-2">
-							<h4 class="line-clamp-1 text-sm font-semibold">${item.title}</h4>
-							<p class="text-xs text-white/65">${item.releaseYear}</p>
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function createSearchResultCard(item) {
-			return `
-				<article class="search-result-card overflow-hidden rounded-xl border border-white/20 p-3 transition duration-300 hover:border-white/45 hover:bg-white/10">
-					<button class="movie-card flex w-full items-center gap-4 text-left" data-id="${item.tmdbId}" data-type="${item.type}" aria-label="Play ${item.title}">
-						<img src="${item.posterUrl}" alt="${item.title} poster" class="h-24 w-16 flex-shrink-0 rounded-md object-cover md:h-28 md:w-20" loading="lazy" />
-						<div class="min-w-0">
-							<h4 class="font-display truncate text-lg font-bold">${item.title}</h4>
-							<p class="mt-1 text-sm text-white/70">${item.releaseYear} • ${item.genre} • ★ ${item.rating.toFixed(1)}</p>
-							<p class="mt-2 line-clamp-2 text-sm text-white/60">${item.description}</p>
-						</div>
-					</button>
-				</article>
-			`;
-		}
-
-		function renderHero() {
-			if (!popularMovie) {
-				refs.heroBackdrop.src = PLACEHOLDER_BACKDROP;
-				refs.heroBadge.textContent = "No Featured Title";
-				refs.heroTitle.textContent = "No featured title";
-				refs.heroDescription.textContent = "No TMDB data is currently available.";
-				refs.heroMeta.innerHTML = "";
-				return;
-			}
-			const badgeByCategory = {
-				movie: "Popular Movie",
-				tv: "Popular TV Show",
-				anime: "Popular Anime"
-			};
-			refs.heroBackdrop.src = popularMovie.backdropUrl;
-			refs.heroBadge.textContent = badgeByCategory[popularMovie.category] || (popularMovie.type === "tv" ? "Popular TV Show" : "Popular Movie");
-			refs.heroTitle.textContent = popularMovie.title;
-			refs.heroDescription.textContent = popularMovie.description;
-			refs.heroMeta.innerHTML = `
-				<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">⭐ ${popularMovie.rating.toFixed(1)}</span>
-				<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${popularMovie.releaseYear}</span>
-				<span class="rounded-full border border-white/30 bg-black/30 px-2.5 py-1">${popularMovie.genre}</span>
-			`;
-		}
-
-		function getFilteredContent() {
-			return catalog.filter((item) => {
-				const matchesSearch = item.title.toLowerCase().includes(state.searchTerm.toLowerCase());
-				const matchesType = state.activeType === "all" || item.category === state.activeType;
-				return matchesSearch && matchesType;
-			});
-		}
-
-		function renderEmptyState(container, message) {
-			container.innerHTML = `<p class="rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/60">${message}</p>`;
-		}
-
-		function renderFAQ() {
-			refs.faqList.innerHTML = faqItems.map((item, index) => `
-				<article class="faq-item overflow-hidden rounded-2xl border border-white/10" aria-expanded="${index === 0 ? "true" : "false"}">
-					<button class="faq-toggle flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6" data-faq-index="${index}" aria-expanded="${index === 0 ? "true" : "false"}">
-						<span class="font-display text-base font-bold md:text-lg">${item.question}</span>
-						<span class="faq-icon inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg text-white/85">+</span>
-					</button>
-					<div class="faq-panel px-5 pb-5 ${index === 0 ? "block" : "hidden"} md:px-6">
-						<p class="max-w-3xl text-sm leading-relaxed md:text-base">${item.answer}</p>
-					</div>
-				</article>
-			`).join("");
-		}
-
-		function updateSectionLabels() {
-			const labelsByType = {
-				all: {
-					recent: "Recent Movies",
-					top10: "Top 10 Movies",
-					topRated: "Top Rated",
-					recentTag: "Fresh Picks",
-					top10Tag: "Most Watched",
-					topRatedTag: "Critic Favorites"
-				},
-				movie: {
-					recent: "Recent Movies",
-					top10: "Top 10 Movies",
-					topRated: "Top Rated Movies",
-					recentTag: "Fresh Picks",
-					top10Tag: "Most Watched",
-					topRatedTag: "Critic Favorites"
-				},
-				tv: {
-					recent: "Recent TV Shows",
-					top10: "Top 10 TV Shows",
-					topRated: "Top Rated TV Shows",
-					recentTag: "New Episodes",
-					top10Tag: "Trending Series",
-					topRatedTag: "Viewer Favorites"
-				},
-				anime: {
-					recent: "Recent Anime",
-					top10: "Top 10 Anime",
-					topRated: "Top Rated Anime",
-					recentTag: "Latest Arcs",
-					top10Tag: "Most Watched",
-					topRatedTag: "Community Favorites"
-				}
-			};
-
-			const labels = labelsByType[state.activeType] || labelsByType.all;
-			refs.recentMoviesHeading.textContent = labels.recent;
-			refs.top10Heading.textContent = labels.top10;
-			refs.topRatedHeading.textContent = labels.topRated;
-			refs.recentMoviesTag.textContent = labels.recentTag;
-			refs.top10Tag.textContent = labels.top10Tag;
-			refs.topRatedTag.textContent = labels.topRatedTag;
-		}
-
-		function renderMovies() {
-			updateSectionLabels();
-
-			const filtered = getFilteredContent();
-			const isSearching = state.searchTerm.length > 0;
-
-			if (isSearching) {
-				refs.rows.classList.add("hidden");
-				refs.searchResultsSection.classList.remove("hidden");
-				refs.searchResultCount.textContent = `${filtered.length} Match${filtered.length === 1 ? "" : "es"}`;
-				refs.searchResultsList.innerHTML = filtered.map(createSearchResultCard).join("");
-				if (!filtered.length) {
-					renderEmptyState(refs.searchResultsList, "No titles match your search.");
-				}
-				return;
-			}
-
-			refs.rows.classList.remove("hidden");
-			refs.searchResultsSection.classList.add("hidden");
-
-			const recent = [...filtered].sort((a, b) => b.releaseYear - a.releaseYear).slice(0, 12);
-			const top10 = [...filtered].sort((a, b) => b.rating - a.rating).slice(0, 10);
-			const topRated = [...filtered].filter((item) => item.rating >= 8).sort((a, b) => b.rating - a.rating).slice(0, 12);
-
-			refs.recentMoviesRow.innerHTML = recent.map(createStandardCard).join("");
-			refs.top10Row.innerHTML = top10.map((item, index) => createTop10Card(item, index + 1)).join("");
-			refs.topRatedRow.innerHTML = topRated.map(createTopRatedCard).join("");
-
-			if (!recent.length) {
-				renderEmptyState(refs.recentMoviesRow, "No recent matches found for your current filters.");
-			}
-			if (!top10.length) {
-				renderEmptyState(refs.top10Row, "Top 10 list is empty for this filter.");
-			}
-			if (!topRated.length) {
-				renderEmptyState(refs.topRatedRow, "No top rated matches found right now.");
-			}
-
-			enhanceCarousels();
-		}
-
-		function updateHeroByActiveFilter() {
-			if (!catalog.length) {
-				return;
-			}
-
-			if (state.activeType === "all") {
-				if (heroCycleMovies.length) {
-					heroCycleIndex = Math.max(0, heroCycleIndex % heroCycleMovies.length);
-					popularMovie = heroCycleMovies[heroCycleIndex];
-				}
-				renderHero();
-				startHeroCycle();
-				return;
-			}
-
-			stopHeroCycle();
-			const scoped = catalog.filter((item) => item.category === state.activeType);
-			popularMovie = scoped[0] || catalog[0] || null;
-			renderHero();
-		}
-
-		function enhanceCarousels() {
-			document.querySelectorAll(".carousel-row").forEach((row) => {
-				row.classList.add("snap-x", "snap-mandatory", "scroll-smooth");
-			});
-		}
-
-		function openPlayer(item) {
-			addToWatchHistory(item);
-			refs.vidkingIframe.dataset.src = getPlayerUrl(item);
-			refs.playerTitle.textContent = item.title;
-			refs.vidkingIframe.src = refs.vidkingIframe.dataset.src;
-			refs.playerOverlay.classList.remove("pointer-events-none", "opacity-0");
-			document.body.classList.add("overflow-hidden");
-		}
-
-		function refreshPlayer() {
-			const currentSrc = refs.vidkingIframe.dataset.src || refs.vidkingIframe.src;
-			if (!currentSrc || currentSrc === "about:blank") {
-				return;
-			}
-			refs.vidkingIframe.src = "about:blank";
-			window.setTimeout(() => {
-				refs.vidkingIframe.src = currentSrc;
-			}, 60);
-		}
-
-		function closePlayer() {
-			refs.playerOverlay.classList.add("pointer-events-none", "opacity-0");
-			refs.vidkingIframe.src = "about:blank";
-			document.body.classList.remove("overflow-hidden");
-		}
-
-		function findItemByIdAndType(id, type) {
-			return catalog.find((item) => String(item.tmdbId) === String(id) && item.type === type);
-		}
-
-		function bindEvents() {
-			refs.faqJumpBtn.addEventListener("click", () => {
-				document.getElementById("faqSection").scrollIntoView({ behavior: "smooth", block: "start" });
-			});
-
-			refs.refreshPlayerBtn.addEventListener("click", refreshPlayer);
-
-			refs.profileBtn.addEventListener("click", (event) => {
-				event.stopPropagation();
-				toggleAccountMenu();
-			});
-
-			refs.recentlyWatchedBtn.addEventListener("click", () => {
-				closeAccountMenu();
-				openWatchHistoryModal();
-			});
-
-			refs.closeHistoryBtn.addEventListener("click", closeWatchHistoryModal);
-
-			refs.watchHistoryOverlay.addEventListener("click", (event) => {
-				if (event.target === refs.watchHistoryOverlay) {
-					closeWatchHistoryModal();
-				}
-			});
-
-			document.addEventListener("click", (event) => {
-				if (!event.target.closest("#profileBtn") && !event.target.closest("#accountMenu")) {
-					closeAccountMenu();
-				}
-			});
-
-			refs.heroWatchNow.addEventListener("click", () => {
-				if (popularMovie) {
-					openPlayer(popularMovie);
-				}
-			});
-
-			refs.closePlayerBtn.addEventListener("click", closePlayer);
-
-			refs.playerOverlay.addEventListener("click", (event) => {
-				if (event.target === refs.playerOverlay) {
-					closePlayer();
-				}
-			});
-
-			document.addEventListener("keydown", (event) => {
-				if (event.key === "Escape") {
-					closeAccountMenu();
-					closeWatchHistoryModal();
-					closePlayer();
-				}
-			});
-
-			document.querySelectorAll(".type-filter-btn").forEach((btn) => {
-				btn.addEventListener("click", () => {
-					state.activeType = btn.dataset.filter;
-					setActiveFilterPill();
-					updateHeroByActiveFilter();
-					renderMovies();
-				});
-			});
-
-			refs.searchInput.addEventListener("input", (event) => {
-				state.searchTerm = event.target.value.trim();
-				renderMovies();
-			});
-
-			document.getElementById("rows").addEventListener("click", (event) => {
-				const card = event.target.closest(".movie-card");
-				if (!card) {
-					return;
-				}
-				const { id, type } = card.dataset;
-				const selected = findItemByIdAndType(id, type);
-				if (selected) {
-					openPlayer(selected);
-				}
-			});
-
-			refs.searchResultsList.addEventListener("click", (event) => {
-				const card = event.target.closest(".movie-card");
-				if (!card) {
-					return;
-				}
-				const { id, type } = card.dataset;
-				const selected = findItemByIdAndType(id, type);
-				if (selected) {
-					openPlayer(selected);
-				}
-			});
-
-			document.querySelectorAll(".carousel-nav-btn").forEach((button) => {
-				button.addEventListener("click", () => {
-					scrollCarousel(button.dataset.row, button.dataset.dir);
-				});
-			});
-
-			document.querySelectorAll(".carousel-row").forEach((row) => {
-				row.addEventListener("keydown", (event) => {
-					if (event.key === "ArrowRight") {
-						event.preventDefault();
-						row.scrollBy({ left: 320, behavior: "smooth" });
-					}
-					if (event.key === "ArrowLeft") {
-						event.preventDefault();
-						row.scrollBy({ left: -320, behavior: "smooth" });
-					}
-				});
-			});
-
-			refs.watchHistoryList.addEventListener("click", (event) => {
-				const card = event.target.closest(".history-item-btn");
-				if (!card) {
-					return;
-				}
-				const selected = findItemByIdAndType(card.dataset.id, card.dataset.type);
-				if (selected) {
-					closeWatchHistoryModal();
-					openPlayer(selected);
-				}
-			});
-
-			refs.faqList.addEventListener("click", (event) => {
-				const toggle = event.target.closest(".faq-toggle");
-				if (!toggle) {
-					return;
-				}
-
-				const item = toggle.closest(".faq-item");
-				const panel = item.querySelector(".faq-panel");
-				const isExpanded = toggle.getAttribute("aria-expanded") === "true";
-
-				refs.faqList.querySelectorAll(".faq-item").forEach((faqItem) => {
-					faqItem.setAttribute("aria-expanded", "false");
-					faqItem.querySelector(".faq-toggle").setAttribute("aria-expanded", "false");
-					faqItem.querySelector(".faq-panel").classList.add("hidden");
-					faqItem.querySelector(".faq-panel").classList.remove("block");
-				});
-
-				if (!isExpanded) {
-					item.setAttribute("aria-expanded", "true");
-					toggle.setAttribute("aria-expanded", "true");
-					panel.classList.remove("hidden");
-					panel.classList.add("block");
-				}
-			});
-		}
-
-		async function init() {
-			refs.profileAvatar.src = pickRandomAvatar();
-			loadWatchHistory();
-			renderFAQ();
+	});
+
+	document.querySelectorAll(".type-filter-btn").forEach(btn => {
+		btn.addEventListener("click", () => {
+			state.activeType = btn.dataset.filter;
 			setActiveFilterPill();
-			bindEvents();
-			await loadCatalogFromTmdb();
-		}
+			// Update hero scope
+			const scoped = state.activeType === "all"
+				? heroCycleMovies
+				: catalog.filter(i => i.category === state.activeType);
+			stopHeroCycle();
+			if (state.activeType === "all") {
+				heroCycleIndex = 0;
+				popularMovie   = heroCycleMovies[0] || null;
+				startHeroCycle();
+			} else {
+				popularMovie = scoped[0] || null;
+			}
+			renderHero();
+			renderMovies();
+		});
+	});
 
-		init();
-	</script>
+	refs.searchInput.addEventListener("input", e => {
+		state.searchTerm = e.target.value.trim();
+		renderMovies();
+	});
+
+	refs.heroWatchNow.addEventListener("click", () => { if (popularMovie) openPlayer(popularMovie); });
+
+	refs.rows.addEventListener("click", e => {
+		const card = e.target.closest(".movie-card");
+		if (!card) return;
+		const item = findByKey(card.dataset.key);
+		if (item) openPlayer(item);
+	});
+
+	refs.searchResultsList.addEventListener("click", e => {
+		const card = e.target.closest(".movie-card");
+		if (!card) return;
+		const item = findByKey(card.dataset.key);
+		if (item) openPlayer(item);
+	});
+
+	document.querySelectorAll(".carousel-nav-btn").forEach(btn => {
+		btn.addEventListener("click", () => scrollCarousel(btn.dataset.row, btn.dataset.dir));
+	});
+
+	document.querySelectorAll(".carousel-row").forEach(row => {
+		row.addEventListener("keydown", e => {
+			if (e.key === "ArrowRight") { e.preventDefault(); row.scrollBy({ left: 320, behavior:"smooth" }); }
+			if (e.key === "ArrowLeft")  { e.preventDefault(); row.scrollBy({ left:-320, behavior:"smooth" }); }
+		});
+	});
+
+	refs.refreshPlayerBtn.addEventListener("click", refreshPlayer);
+	refs.closePlayerBtn.addEventListener("click",   closePlayer);
+	refs.playerOverlay.addEventListener("click", e => { if (e.target === refs.playerOverlay) closePlayer(); });
+
+	refs.profileBtn.addEventListener("click", e => { e.stopPropagation(); toggleAccountMenu(); });
+	refs.recentlyWatchedBtn.addEventListener("click", () => { closeAccountMenu(); openWatchHistoryModal(); });
+	document.addEventListener("click", e => { if (!e.target.closest("#profileBtn") && !e.target.closest("#accountMenu")) closeAccountMenu(); });
+
+	refs.closeHistoryBtn.addEventListener("click", closeWatchHistoryModal);
+	refs.watchHistoryOverlay.addEventListener("click", e => { if (e.target === refs.watchHistoryOverlay) closeWatchHistoryModal(); });
+	refs.watchHistoryList.addEventListener("click", e => {
+		const card = e.target.closest(".history-item-btn");
+		if (!card) return;
+		const item = findByKey(card.dataset.key) || watchHistory.find(h => h.titleKey === card.dataset.key);
+		if (item) { closeWatchHistoryModal(); openPlayer(item); }
+	});
+
+	document.addEventListener("keydown", e => {
+		if (e.key === "Escape") { closeAccountMenu(); closeWatchHistoryModal(); closePlayer(); }
+	});
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AVATAR
+// ─────────────────────────────────────────────────────────────────────────────
+function setAvatar() {
+	const seeds = ["nebula-red","cinema-night","moon-screen","pixel-pop","astro-tape","vhs-hero","starlight-user","rewind-mode"];
+	refs.profileAvatar.src = `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(seeds[Math.floor(Math.random()*seeds.length)])}&radius=50&backgroundType=gradientLinear`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+async function init() {
+	setAvatar();
+	loadWatchHistory();
+	renderFAQ();
+	setActiveFilterPill();
+	bindEvents();
+	await loadCatalog();
+}
+
+init();
+</script>
 </body>
 </html>
