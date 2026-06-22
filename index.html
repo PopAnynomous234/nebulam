@@ -35,6 +35,7 @@
 		.src-badge-tmdb { background:rgba(1,180,228,.85); color:#fff; }
 		.src-badge-omdb { background:rgba(245,168,0,.9); color:#000; }
 		.src-badge-both { background:linear-gradient(90deg,rgba(1,180,228,.9),rgba(245,168,0,.9)); color:#fff; }
+        .src-badge-2embed { background:rgba(120,80,255,.85); color:#fff; }
 
 		/* Loading skeleton */
 		.skeleton { background:linear-gradient(90deg,rgba(255,255,255,.06) 25%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.06) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
@@ -111,6 +112,9 @@
 	<!-- Search results -->
 	<section id="searchResultsSection" class="mx-auto hidden max-w-[900px] px-4 py-10 md:px-8 md:py-12">
 		<div class="mb-4 flex items-center justify-between">
+			<button id="quitSearchBtn" class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/80 transition hover:bg-white hover:text-black">
+                ← Back to Browse
+            </button>
 			<h3 class="font-display text-2xl font-bold tracking-wide">Search Results</h3>
 			<p id="searchResultCount" class="text-xs uppercase tracking-[0.18em] text-white/55"></p>
 		</div>
@@ -297,6 +301,7 @@ const refs = {
 	faqJumpBtn:           $("faqJumpBtn"),
 	mergeStatusText:      $("mergeStatusText"),
 	mergeSourceBadges:    $("mergeSourceBadges"),
+	quitSearchBtn: $("quitSearchBtn"),
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -482,13 +487,51 @@ function mergeCollections(tmdbItems, omdbItems) {
 // PLAYER URL — prefers imdbId for OMDB-sourced items, tmdbId otherwise
 // ─────────────────────────────────────────────────────────────────────────────
 function getPlayerUrl(item) {
-	const id = item.imdbId || item.tmdbId;
-	if (item.type === "tv") {
-		const s = item.season   || 1;
-		const e = item.episode  || 1;
-		return `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}`;
+	if (item.sources?.[0] === "2embed" && item.imdbId) {
+		return item.type === "tv"
+			? `https://www.2embed.cc/embedtv/${item.imdbId}&s=${item.season||1}&e=${item.episode||1}`
+			: `https://www.2embed.cc/embed/${item.imdbId}`;
 	}
+	const id = item.imdbId || item.tmdbId;
+	if (item.type === "tv") return `https://www.2embed.cc/embedtv/${id}&s=${item.season||1}&e=${item.episode||1}`;
 	return `https://www.2embed.cc/embed/${id}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2EMBED SEARCH
+// ─────────────────────────────────────────────────────────────────────────────
+const TWOEMBED_BASE = "https://script.google.com/macros/s/AKfycbyRVwE0Ohiia4ENf7GmggYToeHrXcbAi14fFMIhAsWe38jI2e3wUsHSiGFy0ApG_ru-pg/exec";
+
+async function twoEmbedSearch(query, page = 1) {
+	const url = `${TWOEMBED_BASE}?q=${encodeURIComponent(query)}&page=${page}`;
+	const data = await safeFetch(url);
+	// Adjust this line once you've confirmed the real response shape
+	// (e.g. data.results, data.data, or a bare array)
+	return Array.isArray(data) ? data : (data?.results || data?.data || []);
+}
+
+function normalizeTwoEmbed(raw) {
+	const title = raw.title || raw.name || "Untitled";
+	const year  = parseInt(raw.year || raw.release_date || raw.first_air_date || "0") || 0;
+	const type  = (raw.type || "movie").toLowerCase() === "tv" ? "tv" : "movie";
+
+	return {
+		tmdbId:      raw.tmdb_id || null,
+		imdbId:      raw.imdb_id || raw.id || "",
+		type,
+		category:    type,
+		title,
+		titleKey:    normKey(title, year),
+		backdropUrl: raw.backdrop || PLACEHOLDER_BG,
+		posterUrl:   raw.poster || raw.image || PLACEHOLDER_IMG,
+		rating:      parseFloat(raw.rating || 0),
+		releaseYear: year,
+		genre:       raw.genre || (type === "movie" ? "Movie" : "TV"),
+		description: raw.description || raw.plot || "No description available.",
+		season:      1,
+		episode:     1,
+		sources:     ["2embed"],
+	};
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -631,7 +674,7 @@ function renderHero() {
 function sourcePill(item) {
 	if (!item.sources) return "";
 	const s = item.sources[0];
-	const cls = s === "both" ? "src-badge-both" : s === "omdb" ? "src-badge-omdb" : "src-badge-tmdb";
+	const cls = s === "both" ? "src-badge-both" : s === "omdb" ? "src-badge-omdb" : s === "2embed" ? "src-badge-2embed" : "src-badge-tmdb";
 	const lbl = s === "both" ? "TMDB+OMDB" : s.toUpperCase();
 	return `<span class="src-badge ${cls}" style="position:static;display:inline-block;">${lbl}</span>`;
 }
@@ -642,7 +685,7 @@ function sourcePill(item) {
 function badgeHtml(item) {
 	if (!item.sources) return "";
 	const s = item.sources[0];
-	const cls = s === "both" ? "src-badge-both" : s === "omdb" ? "src-badge-omdb" : "src-badge-tmdb";
+	const cls = s === "both" ? "src-badge-both" : s === "omdb" ? "src-badge-omdb" : s === "2embed" ? "src-badge-2embed" : "src-badge-tmdb";
 	const lbl = s === "both" ? "★" : s.toUpperCase();
 	return `<span class="src-badge ${cls}">${lbl}</span>`;
 }
@@ -955,11 +998,100 @@ function bindEvents() {
 			renderMovies();
 		});
 	});
+let twoEmbedDebounce = null;
 
-	refs.searchInput.addEventListener("input", e => {
-		state.searchTerm = e.target.value.trim();
-		renderMovies();
-	});
+// ─────────────────────────────────────────────────────────────────────────────
+// COMPREHENSIVE SEARCH INPUT & BACK BUTTON ACTION MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Function to reset the application state back to default browsing view
+function quitSearch() {
+	state.searchTerm = "";
+	refs.searchInput.value = "";
+	
+	// Re-run filter and layout builders to reveal the standard home dashboards
+	renderMovies();
+	
+	// Softly fade down the status bar info tracking
+	setStatus("Search cleared. Returned to catalog browse.");
+	const bar = $("mergeStatusBar");
+	if (bar) bar.style.opacity = "0.35";
+}
+
+// Bind click action directly to the Back button
+refs.quitSearchBtn.addEventListener("click", quitSearch);
+
+// Main search listener that handles the "Enter" key with seamless view transitions
+refs.searchInput.addEventListener("keydown", async (e) => {
+	if (e.key !== "Enter") return;
+
+	state.searchTerm = e.target.value.trim();
+	
+	// 1. Instantly trigger view rendering architectures 
+	renderMovies(); 
+
+	if (!state.searchTerm) return;
+
+	// 2. Alert user tracking status systems
+	setStatus(`Searching external databases for "${state.searchTerm}"...`);
+	const bar = $("mergeStatusBar");
+	if (bar) bar.style.opacity = "1";
+
+	// 3. Wipe old items and present a smooth loading rotation block inside the view container
+	refs.searchResultsList.innerHTML = `
+		<div class="col-span-full flex flex-col items-center justify-center py-16 text-center text-white/40">
+			<div class="h-8 w-8 animate-spin rounded-full border-4 border-white/20 border-t-white mb-3"></div>
+			<p class="text-sm font-medium">Querying external database index...</p>
+		</div>
+	`;
+
+	try {
+		// 4. Contact your proxy Google Apps Script endpoint safely
+		const stubs = await twoEmbedSearch(state.searchTerm, 1);
+		const normalized = stubs.map(normalizeTwoEmbed).filter(Boolean);
+		
+		// Integrity Guard: Confirm the user didn't modify or exit the search parameters while loading
+		if (state.searchTerm !== e.target.value.trim()) return;
+
+		const existingKeys = new Set(getFiltered().map(i => i.titleKey));
+		const fresh = normalized.filter(i => !existingKeys.has(i.titleKey));
+		const totalCount = getFiltered().length + fresh.length;
+
+		if (totalCount === 0) {
+			refs.searchResultCount.textContent = "0 Matches";
+			refs.searchResultsList.innerHTML = `
+				<div class="col-span-full rounded-md border border-white/10 bg-white/5 px-4 py-5 text-sm text-white/50">
+					No titles match your search.
+				</div>`;
+			setStatus("Search completed. No titles found.");
+		} else {
+			refs.searchResultsList.innerHTML = "";
+			
+			// Show matching local items
+			if (getFiltered().length > 0) {
+				refs.searchResultsList.innerHTML = getFiltered().map(createSearchResultCard).join("");
+			}
+
+			// Append new API results
+			if (fresh.length > 0) {
+				refs.searchResultsList.insertAdjacentHTML("beforeend", fresh.map(createSearchResultCard).join(""));
+				fresh.forEach(i => catalog.push(i));
+			}
+
+			refs.searchResultCount.textContent = `${totalCount} Match${totalCount === 1 ? "" : "es"}`;
+			setStatus(`Search complete. Added ${fresh.length} dynamic results.`);
+		}
+	} catch (err) {
+		refs.searchResultsList.innerHTML = `
+			<div class="col-span-full rounded-md border border-red-500/20 bg-red-500/5 px-4 py-5 text-sm text-red-400">
+				Search network request failed. Please check connection and try again.
+			</div>`;
+		setStatus("Search failed.");
+		console.error(err);
+	} finally {
+		setTimeout(() => { if (bar) bar.style.opacity = "0.35"; }, 3000);
+	}
+});
 
 	refs.heroWatchNow.addEventListener("click", () => { if (popularMovie) openPlayer(popularMovie); });
 
